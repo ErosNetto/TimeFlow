@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-const { Screma } = mongoose;
+const { Schema } = mongoose;
 
-const userSchema = new Screma(
+const userSchema = new Schema(
   {
-    name: String,
+    userName: String,
     email: String,
     password: String,
     telephone: String,
