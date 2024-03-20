@@ -22,7 +22,7 @@ const companyCreateValidation = () => {
     body("category").isString().withMessage("A categoria é obrigatório."),
     body("email")
       .isString()
-      .withMessage("O email é obrigatório.")
+      .withMessage("O e-mail é obrigatório.")
       .isEmail()
       .withMessage("Insira um e-mail válido."),
     body("password")

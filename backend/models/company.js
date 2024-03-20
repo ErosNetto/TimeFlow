@@ -7,7 +7,8 @@ const companySchema = new Schema(
     ownerName: String,
     telephone: String,
     category: String,
-    address: Object,
+    schedules: Object, // PUT
+    address: Object, // PUT
     email: String,
     password: String,
     // companyExists: String,
@@ -29,4 +30,14 @@ address {
   state: 'String',
   zipCode: 'String',
 }
+
+schedules = {
+  Domingo: "Fechado",
+  SegundaFeira: "10:00 - 19:00",
+  TerçaFeira: "10:00 - 19:00",
+  QuartaFeira: "10:00 - 19:00",
+  QuintaFeira: "10:00 - 19:00",
+  SextaFeira: "10:00 - 19:00",
+  Sábado: "10:00 - 17:00",
+};
 */
