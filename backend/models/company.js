@@ -5,10 +5,12 @@ const companySchema = new Schema(
   {
     companyName: String,
     ownerName: String,
+    telephone: String,
+    category: String,
+    address: Object,
     email: String,
     password: String,
-    telephone: String,
-    address: String,
+    // companyExists: String,
   },
   {
     timestamps: true,
@@ -18,3 +20,13 @@ const companySchema = new Schema(
 const Company = mongoose.model("Company", companySchema);
 
 module.exports = Company;
+
+/*
+address {
+  road: 'String',
+  district: 'String',
+  city: 'String',
+  state: 'String',
+  zipCode: 'String',
+}
+*/
