@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 
 const photoCompanySchema = new Schema(
   {
-    image: String,
+    logoImage: String,
+    facadeImage: String,
     companyId: mongoose.ObjectId,
   },
   {
