@@ -13,8 +13,8 @@ const validate = require("../middlewares/handleValidation");
 const {
   userCreateValidation,
   userLoginValidation,
-} = require("../middlewares/userValidations");
-const userAuthGuard = require("../middlewares/userAuthGuard");
+} = require("../middlewares/user/userValidations");
+const userAuthGuard = require("../middlewares/user/userAuthGuard");
 
 //Routes
 router.post("/register", userCreateValidation(), validate, register);

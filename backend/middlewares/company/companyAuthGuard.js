@@ -1,8 +1,8 @@
-const User = require("../models/User");
+const Company = require("../../models/Company");
 const jwt = require("jsonwebtoken");
-const jwtSecret = process.env.JWT_SECRET_USER;
+const jwtSecret = process.env.JWT_SECRET_COMPANY;
 
-const userAuthGuard = async (req, res, next) => {
+const companyAuthGuard = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -13,7 +13,7 @@ const userAuthGuard = async (req, res, next) => {
   try {
     const verified = jwt.verify(token, jwtSecret);
 
-    req.user = await User.findById(verified.id).select("-password");
+    req.company = await Company.findById(verified.id).select("-password");
 
     next();
   } catch (error) {
@@ -21,4 +21,4 @@ const userAuthGuard = async (req, res, next) => {
   }
 };
 
-module.exports = userAuthGuard;
+module.exports = companyAuthGuard;

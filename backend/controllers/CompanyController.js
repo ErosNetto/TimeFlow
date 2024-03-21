@@ -88,7 +88,15 @@ const login = async (req, res) => {
   });
 };
 
+// Get current logged in company
+const getCurrentCompany = async (req, res) => {
+  const company = req.company;
+
+  res.status(200).json(company);
+};
+
 module.exports = {
   register,
   login,
+  getCurrentCompany,
 };

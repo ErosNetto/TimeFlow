@@ -5,7 +5,7 @@ const router = express();
 router.use("/api/users", require("./UserRouter"));
 
 // Company router
-router.use("/api/company", require("./CompanyRouter"));
+router.use("/api/companies", require("./CompanyRouter"));
 
 // Test router
 router.get("/", (req, res) => {
