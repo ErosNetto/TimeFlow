@@ -5,6 +5,7 @@ const professionalSchema = new Schema(
   {
     professionalName: String,
     servicesPerformed: Array,
+    profileImage: String,
     companyId: mongoose.ObjectId,
   },
   {

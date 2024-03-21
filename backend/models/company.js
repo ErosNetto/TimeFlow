@@ -9,6 +9,8 @@ const companySchema = new Schema(
     category: String,
     schedules: Object, // PUT
     address: Object, // PUT
+    logoImage: String, // PUT
+    facadeImage: String, // PUT
     email: String,
     password: String,
     // companyExists: String,
@@ -23,14 +25,6 @@ const Company = mongoose.model("Company", companySchema);
 module.exports = Company;
 
 /*
-address {
-  road: 'String',
-  district: 'String',
-  city: 'String',
-  state: 'String',
-  zipCode: 'String',
-}
-
 schedules = {
   Domingo: "Fechado",
   SegundaFeira: "10:00 - 19:00",
@@ -40,4 +34,12 @@ schedules = {
   SextaFeira: "10:00 - 19:00",
   Sábado: "10:00 - 17:00",
 };
+
+address {
+  road: 'String',
+  district: 'String',
+  city: 'String',
+  state: 'String',
+  zipCode: 'String',
+}
 */

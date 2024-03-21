@@ -53,7 +53,31 @@ const companyLoginValidation = () => {
   ];
 };
 
+const companyUpdateValidation = () => {
+  return [
+    body("companyName").optional(),
+    body("ownerName")
+      .optional()
+      .isLength({ min: 3 })
+      .withMessage(
+        "O nome do dono da empresa precisa ter no mínimo 3 caracteres."
+      ),
+    body("telephone")
+      .optional()
+      .matches(/^\+\d{2} \d{2} \d{5}-\d{4}$/)
+      .withMessage("O telefone deve estar no formato +XX XX XXXXX-XXXX."),
+    body("category").optional(),
+    body("schedules").optional(),
+    body("address").optional(),
+    body("password")
+      .optional()
+      .isLength({ min: 8 })
+      .withMessage("A senha precisa ter no mínimo 8 caracteres."),
+  ];
+};
+
 module.exports = {
   companyCreateValidation,
   companyLoginValidation,
+  companyUpdateValidation,
 };

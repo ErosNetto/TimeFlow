@@ -3,6 +3,8 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const mongoose = require("mongoose");
+
 const jwtSecret = process.env.JWT_SECRET_USER;
 const tokenExpires = process.env.TOKEN_EXPIRES;
 
@@ -84,8 +86,39 @@ const getCurrentUser = async (req, res) => {
   res.status(200).json(user);
 };
 
+// Update an user
+const update = async (req, res) => {
+  const { userName, telephone, password } = req.body;
+
+  reqUser = req.user;
+
+  const user = await User.findById(
+    new mongoose.Types.ObjectId(reqUser._id)
+  ).select("-password");
+
+  if (userName) {
+    user.name = userName;
+  }
+
+  if (telephone) {
+    user.telephone = telephone;
+  }
+
+  if (password) {
+    // Generate password hash
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    user.password = passwordHash;
+  }
+
+  await user.save();
+
+  res.status(200).json(user);
+};
+
 module.exports = {
   register,
   login,
   getCurrentUser,
+  update,
 };

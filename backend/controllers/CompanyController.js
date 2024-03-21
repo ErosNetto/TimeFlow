@@ -1,8 +1,9 @@
 const Company = require("../models/Company");
-const User = require("../models/User");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const mongoose = require("mongoose");
 
 const jwtSecret = process.env.JWT_SECRET_COMPANY;
 const tokenExpires = process.env.TOKEN_EXPIRES;
@@ -95,8 +96,84 @@ const getCurrentCompany = async (req, res) => {
   res.status(200).json(company);
 };
 
+// Update an company
+const update = async (req, res) => {
+  const {
+    companyName,
+    ownerName,
+    telephone,
+    category,
+    schedules,
+    address,
+    password,
+  } = req.body;
+
+  let logoImage = null;
+  let facadeImage = null;
+
+  if (req.files && req.files.length > 0) {
+    req.files.forEach((file) => {
+      if (file.fieldname === "logoImage") {
+        logoImage = file.filename;
+      } else if (file.fieldname === "facadeImage") {
+        facadeImage = file.filename;
+      }
+    });
+  }
+
+  reqCompany = req.company;
+
+  const company = await Company.findOne(
+    new mongoose.Types.ObjectId(reqCompany._id)
+  ).select("-password");
+
+  if (companyName) {
+    company.companyName = companyName;
+  }
+
+  if (ownerName) {
+    company.ownerName = ownerName;
+  }
+
+  if (telephone) {
+    company.telephone = telephone;
+  }
+
+  if (category) {
+    company.category = category;
+  }
+
+  if (schedules) {
+    company.schedules = schedules;
+  }
+
+  if (address) {
+    company.address = address;
+  }
+
+  if (password) {
+    // Generate password hash
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    company.password = passwordHash;
+  }
+
+  if (logoImage) {
+    company.logoImage = logoImage;
+  }
+
+  if (facadeImage) {
+    company.facadeImage = facadeImage;
+  }
+
+  await company.save();
+
+  res.status(200).json(company);
+};
+
 module.exports = {
   register,
   login,
   getCurrentCompany,
+  update,
 };
