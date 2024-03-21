@@ -3,7 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET_USER;
 const tokenExpires = process.env.TOKEN_EXPIRES;
 
 // Generate user token
@@ -53,11 +53,39 @@ const register = async (req, res) => {
 };
 
 // Sing user in
-const login = (req, res) => {
-  res.send("Login");
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  // Check if user exists
+  if (!user) {
+    res.status(404).json({ errors: ["Usuário não encontrado."] });
+    return;
+  }
+
+  // Check if password matches
+  if (!(await bcrypt.compare(password, user.password))) {
+    res.status(422).json({ errors: ["Senha inválida."] });
+    return;
+  }
+
+  // Return user with token
+  res.status(201).json({
+    _id: user._id,
+    token: generateToken(user._id),
+  });
+};
+
+// Get current logged in user
+const getCurrentUser = async (req, res) => {
+  const user = req.user;
+
+  res.status(200).json(user);
 };
 
 module.exports = {
   register,
   login,
+  getCurrentUser,
 };

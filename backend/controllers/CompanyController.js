@@ -4,7 +4,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET_COMPANY;
 const tokenExpires = process.env.TOKEN_EXPIRES;
 
 // Generate user token
@@ -64,6 +64,31 @@ const register = async (req, res) => {
   });
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const company = await Company.findOne({ email });
+
+  // Check if company exists
+  if (!company) {
+    res.status(404).json({ errors: ["Empresa não encontrado."] });
+    return;
+  }
+
+  // Check if password matches
+  if (!(await bcrypt.compare(password, company.password))) {
+    res.status(422).json({ errors: ["Senha inválida."] });
+    return;
+  }
+
+  // Return user with token
+  res.status(201).json({
+    _id: company._id,
+    token: generateToken(company._id),
+  });
+};
+
 module.exports = {
   register,
+  login,
 };
