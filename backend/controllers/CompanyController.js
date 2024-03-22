@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 
 const mongoose = require("mongoose");
 
+const { deleteImages } = require("../utils/deleteImages");
+
 const jwtSecret = process.env.JWT_SECRET_COMPANY;
 const tokenExpires = process.env.TOKEN_EXPIRES;
 
@@ -110,22 +112,20 @@ const update = async (req, res) => {
 
   const reqCompany = req.company;
 
-  let logoImage;
-  let facadeImage;
+  let newLogoImage;
+  let newFacadeImage;
+  let logoImageOld;
+  let facadeImageOld;
 
   if (req.files) {
     if (req.files.logoImage) {
-      logoImage = req.files.logoImage[0].filename;
+      newLogoImage = req.files.logoImage[0].filename;
     }
 
     if (req.files.facadeImage) {
-      facadeImage = req.files.facadeImage[0].filename;
+      newFacadeImage = req.files.facadeImage[0].filename;
     }
   }
-
-  // const company = await Company.findById(
-  //   new mongoose.Types.ObjectId(reqCompany._id)
-  // ).select("-password");
 
   const company = await Company.findById(reqCompany._id).select("-password");
 
@@ -153,12 +153,18 @@ const update = async (req, res) => {
     company.address = address;
   }
 
-  if (logoImage) {
-    company.logoImage = logoImage;
+  if (newLogoImage) {
+    if (company.facadeImage) {
+      logoImageOld = company.logoImage;
+    }
+    company.logoImage = newLogoImage;
   }
 
-  if (facadeImage) {
-    company.facadeImage = facadeImage;
+  if (newFacadeImage) {
+    if (company.facadeImage) {
+      facadeImageOld = company.facadeImage;
+    }
+    company.facadeImage = newFacadeImage;
   }
 
   if (password) {
@@ -168,6 +174,16 @@ const update = async (req, res) => {
   }
 
   await company.save();
+
+  if (!company.errors) {
+    if (newLogoImage) {
+      await deleteImages("company", logoImageOld);
+    }
+
+    if (newFacadeImage) {
+      await deleteImages("company", facadeImageOld);
+    }
+  }
 
   res.status(200).json({ company, message: "Atualizado com sucesso!" });
 };

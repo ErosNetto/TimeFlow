@@ -17,7 +17,8 @@ const {
   companyUpdateValidation,
 } = require("../middlewares/company/companyValidations");
 const companyAuthGuard = require("../middlewares/company/companyAuthGuard");
-const { imageUpload, processFiles } = require("../middlewares/imageUpload");
+const { imagesUpload } = require("../middlewares/imagesUpload");
+const { processFiles } = require("../middlewares/processFiles");
 
 // Routes
 router.post("/register", companyCreateValidation(), validate, register);
@@ -28,11 +29,11 @@ router.put(
   companyAuthGuard,
   companyUpdateValidation(),
   validate,
-  imageUpload.fields([
+  imagesUpload.fields([
     { name: "logoImage", maxCount: 1 },
     { name: "facadeImage", maxCount: 1 },
   ]),
-  // processFiles,
+  processFiles,
   update
 );
 
