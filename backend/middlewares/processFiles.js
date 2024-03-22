@@ -2,7 +2,7 @@ const sharp = require("sharp");
 const fs = require("fs/promises");
 const path = require("path");
 
-// Middleware para converter as imagens e atualizar os nomes no req.files
+// Middleware to convert images and update names in req.files
 const processFiles = async (req, res, next) => {
   try {
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -14,7 +14,7 @@ const processFiles = async (req, res, next) => {
       const inputPath = file.path;
       const outputPath = inputPath.replace(/\.[^.]+$/, "") + ".webp";
 
-      // Usando o Sharp para converter a imagem para WebP
+      // Using Sharp to convert the image to WebP
       return sharp(inputPath)
         .webp()
         .toFile(outputPath)
