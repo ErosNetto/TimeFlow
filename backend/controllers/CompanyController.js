@@ -3,7 +3,7 @@ const Company = require("../models/Company");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 const { deleteImages } = require("../utils/deleteImages");
 
