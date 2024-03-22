@@ -90,14 +90,16 @@ const getCurrentUser = async (req, res) => {
 const update = async (req, res) => {
   const { userName, telephone, password } = req.body;
 
-  reqUser = req.user;
+  const reqUser = req.user;
 
-  const user = await User.findById(
-    new mongoose.Types.ObjectId(reqUser._id)
-  ).select("-password");
+  // const user = await User.findById(
+  //   new mongoose.Types.ObjectId(reqUser._id)
+  // ).select("-password");
+
+  const user = await User.findById(reqUser._id).select("-password");
 
   if (userName) {
-    user.name = userName;
+    user.userName = userName;
   }
 
   if (telephone) {
@@ -105,7 +107,6 @@ const update = async (req, res) => {
   }
 
   if (password) {
-    // Generate password hash
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
     user.password = passwordHash;
@@ -113,7 +114,7 @@ const update = async (req, res) => {
 
   await user.save();
 
-  res.status(200).json(user);
+  res.status(200).json({ user, message: "Atualizado com sucesso!" });
 };
 
 module.exports = {

@@ -108,24 +108,26 @@ const update = async (req, res) => {
     password,
   } = req.body;
 
-  let logoImage = null;
-  let facadeImage = null;
+  const reqCompany = req.company;
 
-  if (req.files && req.files.length > 0) {
-    req.files.forEach((file) => {
-      if (file.fieldname === "logoImage") {
-        logoImage = file.filename;
-      } else if (file.fieldname === "facadeImage") {
-        facadeImage = file.filename;
-      }
-    });
+  let logoImage;
+  let facadeImage;
+
+  if (req.files) {
+    if (req.files.logoImage) {
+      logoImage = req.files.logoImage[0].filename;
+    }
+
+    if (req.files.facadeImage) {
+      facadeImage = req.files.facadeImage[0].filename;
+    }
   }
 
-  reqCompany = req.company;
+  // const company = await Company.findById(
+  //   new mongoose.Types.ObjectId(reqCompany._id)
+  // ).select("-password");
 
-  const company = await Company.findOne(
-    new mongoose.Types.ObjectId(reqCompany._id)
-  ).select("-password");
+  const company = await Company.findById(reqCompany._id).select("-password");
 
   if (companyName) {
     company.companyName = companyName;
@@ -151,13 +153,6 @@ const update = async (req, res) => {
     company.address = address;
   }
 
-  if (password) {
-    // Generate password hash
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-    company.password = passwordHash;
-  }
-
   if (logoImage) {
     company.logoImage = logoImage;
   }
@@ -166,9 +161,15 @@ const update = async (req, res) => {
     company.facadeImage = facadeImage;
   }
 
+  if (password) {
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    company.password = passwordHash;
+  }
+
   await company.save();
 
-  res.status(200).json(company);
+  res.status(200).json({ company, message: "Atualizado com sucesso!" });
 };
 
 module.exports = {

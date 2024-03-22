@@ -32,7 +32,7 @@ router.put(
     { name: "logoImage", maxCount: 1 },
     { name: "facadeImage", maxCount: 1 },
   ]),
-  processFiles,
+  // processFiles,
   update
 );
 
