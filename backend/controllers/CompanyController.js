@@ -100,82 +100,82 @@ const getCurrentCompany = async (req, res) => {
 
 // Update an company
 const update = async (req, res) => {
-  const {
-    companyName,
-    ownerName,
-    telephone,
-    category,
-    schedules,
-    address,
-    password,
-  } = req.body;
+  try {
+    const {
+      companyName,
+      ownerName,
+      telephone,
+      category,
+      schedules,
+      address,
+      password,
+    } = req.body;
 
-  const reqCompany = req.company;
+    const reqCompany = req.company;
 
-  let newLogoImage;
-  let newFacadeImage;
-  let logoImageOld;
-  let facadeImageOld;
+    let newLogoImage;
+    let newFacadeImage;
+    let logoImageOld;
+    let facadeImageOld;
 
-  if (req.files) {
-    if (req.files.logoImage) {
-      newLogoImage = req.files.logoImage[0].filename;
+    if (req.files) {
+      if (req.files.logoImage) {
+        newLogoImage = req.files.logoImage[0].filename;
+      }
+
+      if (req.files.facadeImage) {
+        newFacadeImage = req.files.facadeImage[0].filename;
+      }
     }
 
-    if (req.files.facadeImage) {
-      newFacadeImage = req.files.facadeImage[0].filename;
+    const company = await Company.findById(reqCompany._id).select("-password");
+
+    if (companyName) {
+      company.companyName = companyName;
     }
-  }
 
-  const company = await Company.findById(reqCompany._id).select("-password");
-
-  if (companyName) {
-    company.companyName = companyName;
-  }
-
-  if (ownerName) {
-    company.ownerName = ownerName;
-  }
-
-  if (telephone) {
-    company.telephone = telephone;
-  }
-
-  if (category) {
-    company.category = category;
-  }
-
-  if (schedules) {
-    company.schedules = schedules;
-  }
-
-  if (address) {
-    company.address = address;
-  }
-
-  if (newLogoImage) {
-    if (company.facadeImage) {
-      logoImageOld = company.logoImage;
+    if (ownerName) {
+      company.ownerName = ownerName;
     }
-    company.logoImage = newLogoImage;
-  }
 
-  if (newFacadeImage) {
-    if (company.facadeImage) {
-      facadeImageOld = company.facadeImage;
+    if (telephone) {
+      company.telephone = telephone;
     }
-    company.facadeImage = newFacadeImage;
-  }
 
-  if (password) {
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-    company.password = passwordHash;
-  }
+    if (category) {
+      company.category = category;
+    }
 
-  await company.save();
+    if (schedules) {
+      company.schedules = schedules;
+    }
 
-  if (!company.errors) {
+    if (address) {
+      company.address = address;
+    }
+
+    if (newLogoImage) {
+      if (company.facadeImage) {
+        logoImageOld = company.logoImage;
+      }
+      company.logoImage = newLogoImage;
+    }
+
+    if (newFacadeImage) {
+      if (company.facadeImage) {
+        facadeImageOld = company.facadeImage;
+      }
+      company.facadeImage = newFacadeImage;
+    }
+
+    if (password) {
+      const salt = await bcrypt.genSalt();
+      const passwordHash = await bcrypt.hash(password, salt);
+      company.password = passwordHash;
+    }
+
+    await company.save();
+
     if (newLogoImage) {
       await deleteImages("company", logoImageOld);
     }
@@ -183,9 +183,12 @@ const update = async (req, res) => {
     if (newFacadeImage) {
       await deleteImages("company", facadeImageOld);
     }
-  }
 
-  res.status(200).json({ company, message: "Atualizado com sucesso!" });
+    res.status(200).json({ company, message: "Atualizado com sucesso!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erro ao editar o perfil.");
+  }
 };
 
 module.exports = {
