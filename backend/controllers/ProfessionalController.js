@@ -55,6 +55,9 @@ const updateProfissional = async (req, res) => {
     // Check if professional exists
     if (!professional) {
       res.status(404).json({ errors: ["Profissional não encontrado!"] });
+      if (newProfileImage) {
+        await deleteImages("professionals", newProfileImage);
+      }
       return;
     }
 
@@ -63,6 +66,9 @@ const updateProfissional = async (req, res) => {
       res.status(422).json({
         erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
       });
+      if (newProfileImage) {
+        await deleteImages("professionals", newProfileImage);
+      }
       return;
     }
 
