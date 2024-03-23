@@ -146,7 +146,7 @@ const update = async (req, res) => {
     }
 
     if (newLogoImage) {
-      if (company.facadeImage) {
+      if (company.logoImage) {
         logoImageOld = company.logoImage;
       }
       company.logoImage = newLogoImage;
@@ -168,11 +168,15 @@ const update = async (req, res) => {
     await company.save();
 
     if (newLogoImage) {
-      await deleteImages("company", logoImageOld);
+      if (logoImageOld) {
+        await deleteImages("company", logoImageOld);
+      }
     }
 
     if (newFacadeImage) {
-      await deleteImages("company", facadeImageOld);
+      if (facadeImageOld) {
+        await deleteImages("company", facadeImageOld);
+      }
     }
 
     res.status(200).json({ company, message: "Atualizado com sucesso!" });
@@ -202,10 +206,20 @@ const getCompanyById = async (req, res) => {
   }
 };
 
+// Get all company
+const getAllCompanies = async (req, res) => {
+  const companies = await Company.find({});
+  // .sort([["createdAt"], -1])
+  // .exec();
+
+  return res.status(200).json(companies);
+};
+
 module.exports = {
   register,
   login,
   getCurrentCompany,
   update,
   getCompanyById,
+  getAllCompanies,
 };

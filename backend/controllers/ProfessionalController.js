@@ -90,7 +90,9 @@ const updateProfissional = async (req, res) => {
     await professional.save();
 
     if (newProfileImage) {
-      await deleteImages("professionals", profileImageOld);
+      if (profileImageOld) {
+        await deleteImages("professionals", profileImageOld);
+      }
     }
 
     res.status(200).json({ professional, message: "Atualizado com sucesso!" });
@@ -139,6 +141,9 @@ const deleteProfessional = async (req, res) => {
     return;
   }
 };
+
+//  Get all professionals of company
+const gelAllProfessionals = async (req, res) => {};
 
 module.exports = {
   insertProfessional,
