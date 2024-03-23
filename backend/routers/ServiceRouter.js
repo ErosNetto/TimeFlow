@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 // Controller
-const { insertService } = require("../controllers/ServiceController");
+const {
+  insertService,
+  deleteService,
+} = require("../controllers/ServiceController");
 
 // Middlewares
 const validate = require("../middlewares/handleValidation");
@@ -17,5 +20,6 @@ router.post(
   validate,
   insertService
 );
+router.delete("/:id", companyAuthGuard, deleteService);
 
 module.exports = router;

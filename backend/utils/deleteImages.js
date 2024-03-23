@@ -12,10 +12,6 @@ const deleteImages = async (imageType, oldImageName) => {
     if (imageType == "professionals") {
       await fs.unlink(`${uploadsFolder}/professionals/${oldImageName}`);
     }
-
-    if (imageType == "professionals") {
-      await fs.unlink(`${uploadsFolder}/professionals/${oldImageName}`);
-    }
   } catch (error) {
     console.error("Erro ao excluir as imagens:", error);
     throw new Error("Erro ao excluir as imagens.");

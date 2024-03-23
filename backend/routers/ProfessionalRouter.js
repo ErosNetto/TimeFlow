@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 // Controller
-const { insertProfessional } = require("../controllers/ProfessionalController");
+const {
+  insertProfessional,
+  deleteProfessional,
+} = require("../controllers/ProfessionalController");
 
 // Middlewares
 const {
@@ -24,5 +27,6 @@ router.post(
   validate,
   insertProfessional
 );
+router.delete("/:id", companyAuthGuard, deleteProfessional);
 
 module.exports = router;

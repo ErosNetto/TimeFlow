@@ -24,11 +24,48 @@ const insertService = async (req, res) => {
     res.status(422).json({
       erros: ["Houve um problema, por favor tente novamente mais tarde."],
     });
+    return;
   }
 
   res.status(201).json({ newService, message: "Serviço criado com sucesso!" });
 };
 
+// Remove a service from DB
+const deleteService = async (req, res) => {
+  const { id } = req.params;
+
+  const reqCompany = req.company;
+
+  try {
+    // const service = await Service.findById(new mongoose.Types.ObjectId(id));
+    const service = await Service.findById(id);
+
+    // Check if service exist
+    if (!service) {
+      res.status(404).json({ errors: ["Serviço não encontrado!"] });
+      return;
+    }
+
+    // Check if service belongs to company
+    if (!service.companyId.equals(reqCompany._id)) {
+      res.status(422).json({
+        erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
+      });
+      return;
+    }
+
+    await Service.findByIdAndDelete(service._id);
+
+    res
+      .status(200)
+      .json({ id: service._id, message: "Serviço excluido com sucesso." });
+  } catch (error) {
+    res.status(404).json({ errors: ["Serviço não encontrado!"] });
+    return;
+  }
+};
+
 module.exports = {
   insertService,
+  deleteService,
 };
