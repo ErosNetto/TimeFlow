@@ -4,12 +4,16 @@ const router = express.Router();
 // Controller
 const {
   insertService,
+  updateService,
   deleteService,
 } = require("../controllers/ServiceController");
 
 // Middlewares
 const validate = require("../middlewares/handleValidation");
-const { serviceInsertValidation } = require("../middlewares/serviceValidation");
+const {
+  serviceInsertValidation,
+  serviceUpdateValidation,
+} = require("../middlewares/serviceValidation");
 const companyAuthGuard = require("../middlewares/company/companyAuthGuard");
 
 // Router
@@ -19,6 +23,13 @@ router.post(
   serviceInsertValidation(),
   validate,
   insertService
+);
+router.put(
+  "/:id",
+  companyAuthGuard,
+  serviceUpdateValidation(),
+  validate,
+  updateService
 );
 router.delete("/:id", companyAuthGuard, deleteService);
 
