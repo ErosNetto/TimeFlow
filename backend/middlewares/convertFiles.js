@@ -3,27 +3,30 @@ const fs = require("fs/promises");
 const path = require("path");
 
 // Middleware to convert images and update names in req.files
-const processFiles = async (req, res, next) => {
+const convertFiles = async (req, res, next) => {
   try {
-    if (!req.files || Object.keys(req.files).length === 0) {
+    if (!req.files && !req.file) {
       return next();
     }
 
-    const filesPromises = Object.keys(req.files).map((fieldName) => {
-      const file = req.files[fieldName][0];
+    let fieldFiles = [];
+
+    if (req.files) {
+      fieldFiles = Object.values(req.files).flat();
+    } else {
+      fieldFiles = [req.file];
+    }
+
+    const filesPromises = fieldFiles.map(async (file) => {
       const inputPath = file.path;
       const outputPath = inputPath.replace(/\.[^.]+$/, "") + ".webp";
 
       // Using Sharp to convert the image to WebP
-      return sharp(inputPath)
-        .webp()
-        .toFile(outputPath)
-        .then(() => {
-          return fs.unlink(inputPath);
-        })
-        .then(() => {
-          req.files[fieldName][0].filename = path.basename(outputPath);
-        });
+      await sharp(inputPath).webp().toFile(outputPath);
+
+      await fs.unlink(inputPath);
+
+      file.filename = path.basename(outputPath);
     });
 
     await Promise.all(filesPromises);
@@ -36,4 +39,4 @@ const processFiles = async (req, res, next) => {
   }
 };
 
-module.exports = { processFiles };
+module.exports = { convertFiles };

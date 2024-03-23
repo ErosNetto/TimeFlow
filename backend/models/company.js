@@ -13,7 +13,6 @@ const companySchema = new Schema(
     facadeImage: String, // PUT
     email: String,
     password: String,
-    // companyExists: String,
   },
   {
     timestamps: true,

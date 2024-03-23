@@ -22,15 +22,6 @@ const register = async (req, res) => {
   const { companyName, ownerName, telephone, category, email, password } =
     req.body;
 
-  // Verificar
-  // Check if company with same name and email exists
-  // const companyExists = email + " " + companyName;
-  // const company = await Company.findOne({ companyExists });
-
-  // Verificar
-  // const company = await Company.findOne({ email });
-  // const user = await User.findOne({ email });
-
   const company = await Company.findOne({ email });
 
   if (company) {
@@ -191,9 +182,30 @@ const update = async (req, res) => {
   }
 };
 
+// Get company by id
+const getCompanyById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const company = await Company.findById(id).select("-password");
+
+    // Check if user exists
+    if (!company) {
+      res.status(404).json({ errors: ["Empresa não encontrado."] });
+      return;
+    }
+
+    res.status(200).json(company);
+  } catch (error) {
+    res.status(404).json({ errors: ["Empresa não encontrado."] });
+    return;
+  }
+};
+
 module.exports = {
   register,
   login,
   getCurrentCompany,
   update,
+  getCompanyById,
 };

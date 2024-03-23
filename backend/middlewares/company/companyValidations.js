@@ -5,8 +5,6 @@ const companyCreateValidation = () => {
     body("companyName")
       .isString()
       .withMessage("O nome da empresa é obrigatório."),
-    // .isLength({ min: 3 })
-    // .withMessage("O nome da empresa precisa ter no mínimo 3 caracteres."),
     body("ownerName")
       .isString()
       .withMessage("O nome do dono da empresa é obrigatório")
@@ -55,7 +53,12 @@ const companyLoginValidation = () => {
 
 const companyUpdateValidation = () => {
   return [
-    body("companyName").optional(),
+    body("companyName")
+      .optional()
+      .isString()
+      .withMessage("O nome da empresa precisa ser uma string")
+      .isLength({ min: 1 })
+      .withMessage("O nome da empresa precisa ser ter no mínimo 1 caracter."),
     body("ownerName")
       .optional()
       .isLength({ min: 3 })
@@ -69,6 +72,22 @@ const companyUpdateValidation = () => {
     body("category").optional(),
     body("schedules").optional(),
     body("address").optional(),
+    // body("logoImage")
+    //   // .optional()
+    //   .custom((value, { req }) => {
+    //     if (!req.file) {
+    //       throw new Error("A imagem é obrigatória.");
+    //     }
+    //     return true;
+    //   }),
+    // body("facadeImage")
+    //   // .optional()
+    //   .custom((value, { req }) => {
+    //     if (!req.file) {
+    //       throw new Error("A imagem é obrigatória.");
+    //     }
+    //     return true;
+    //   }),
     body("password")
       .optional()
       .isLength({ min: 8 })
