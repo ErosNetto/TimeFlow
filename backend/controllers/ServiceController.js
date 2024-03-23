@@ -39,7 +39,7 @@ const updateService = async (req, res) => {
 
   const service = await Service.findById(id);
 
-  // Check if photo exists
+  // Check if service exists
   if (!service) {
     res.status(404).json({ errors: ["Serviço não encontrado!"] });
     return;

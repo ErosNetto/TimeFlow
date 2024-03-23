@@ -29,6 +29,41 @@ const professionalInsertValidation = () => {
   ];
 };
 
+const professionalUpdateValidation = () => {
+  return [
+    body("professionalName")
+      .optional()
+      .not()
+      .equals("undefined")
+      .withMessage("O nome do profissional é obrigatório.")
+      .isString()
+      .withMessage("O nome do profissional precisa ser uma string")
+      .isLength({ min: 3 })
+      .withMessage(
+        "O nome do profissional precisa ter no mínimo 3 caracteres."
+      ),
+    body("servicesPerformed")
+      .optional()
+      .custom((value) => {
+        if (!Array.isArray(value) || value.length < 1) {
+          throw new Error(
+            "O serviço é obrigatório e deve ser um array com pelo menos um elemento."
+          );
+        }
+        return true;
+      }),
+    body("profileImage")
+      .optional()
+      .custom((value, { req }) => {
+        if (!req.file) {
+          throw new Error("A imagem é obrigatória.");
+        }
+        return true;
+      }),
+  ];
+};
+
 module.exports = {
   professionalInsertValidation,
+  professionalUpdateValidation,
 };

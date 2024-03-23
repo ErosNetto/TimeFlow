@@ -5,11 +5,13 @@ const router = express.Router();
 const {
   insertProfessional,
   deleteProfessional,
+  updateProfissional,
 } = require("../controllers/ProfessionalController");
 
 // Middlewares
 const {
   professionalInsertValidation,
+  professionalUpdateValidation,
 } = require("../middlewares/professionalValidation");
 const validate = require("../middlewares/handleValidation");
 const companyAuthGuard = require("../middlewares/company/companyAuthGuard");
@@ -26,6 +28,15 @@ router.post(
   professionalInsertValidation(),
   validate,
   insertProfessional
+);
+router.put(
+  "/:id",
+  companyAuthGuard,
+  imagesUpload.single("profileImage"),
+  convertFiles,
+  professionalUpdateValidation(),
+  validate,
+  updateProfissional
 );
 router.delete("/:id", companyAuthGuard, deleteProfessional);
 
