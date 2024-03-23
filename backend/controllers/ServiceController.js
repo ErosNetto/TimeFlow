@@ -30,6 +30,46 @@ const insertService = async (req, res) => {
   res.status(201).json({ newService, message: "Serviço criado com sucesso!" });
 };
 
+// Update a service
+const updateService = async (req, res) => {
+  const { id } = req.params;
+  const { serviceName, price, time } = req.body;
+
+  const reqCompany = req.company;
+
+  const service = await Service.findById(id);
+
+  // Check if photo exists
+  if (!service) {
+    res.status(404).json({ errors: ["Serviço não encontrado!"] });
+    return;
+  }
+
+  // Check if service belongs to company
+  if (!service.companyId.equals(reqCompany._id)) {
+    res.status(422).json({
+      erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
+    });
+    return;
+  }
+
+  if (serviceName) {
+    service.serviceName = serviceName;
+  }
+
+  if (price) {
+    service.price = price;
+  }
+
+  if (time) {
+    service.time = time;
+  }
+
+  await service.save();
+
+  res.status(200).json({ service, message: "Serviço atualizado com sucesso!" });
+};
+
 // Remove a service from DB
 const deleteService = async (req, res) => {
   const { id } = req.params;
@@ -67,5 +107,6 @@ const deleteService = async (req, res) => {
 
 module.exports = {
   insertService,
+  updateService,
   deleteService,
 };
