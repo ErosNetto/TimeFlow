@@ -146,15 +146,20 @@ const deleteProfessional = async (req, res) => {
 const gelProfessionalById = async (req, res) => {
   const { id } = req.params;
 
-  const professional = await Professional.findById(id);
+  try {
+    const professional = await Professional.findById(id);
 
-  // Check if professional exists
-  if (!professional) {
+    // Check if professional exists
+    if (!professional) {
+      res.status(404).json({ errors: ["Profissional não encontrado."] });
+      return;
+    }
+
+    return res.status(200).json(professional);
+  } catch (error) {
     res.status(404).json({ errors: ["Profissional não encontrado."] });
     return;
   }
-
-  return res.status(200).json(professional);
 };
 
 //  Get all professionals of company

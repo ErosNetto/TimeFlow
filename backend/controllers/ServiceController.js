@@ -109,15 +109,20 @@ const deleteService = async (req, res) => {
 const gelServicelById = async (req, res) => {
   const { id } = req.params;
 
-  const service = await Service.findById(id);
+  try {
+    const service = await Service.findById(id);
 
-  // Check if professional exists
-  if (!service) {
+    // Check if professional exists
+    if (!service) {
+      res.status(404).json({ errors: ["Serviço não encontrado."] });
+      return;
+    }
+
+    return res.status(200).json(service);
+  } catch (error) {
     res.status(404).json({ errors: ["Serviço não encontrado."] });
     return;
   }
-
-  return res.status(200).json(service);
 };
 
 // Get all company of services
