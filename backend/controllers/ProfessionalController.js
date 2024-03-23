@@ -142,6 +142,21 @@ const deleteProfessional = async (req, res) => {
   }
 };
 
+// Get professionalo of company by id
+const gelProfessionalById = async (req, res) => {
+  const { id } = req.params;
+
+  const professional = await Professional.findById(id);
+
+  // Check if professional exists
+  if (!professional) {
+    res.status(404).json({ errors: ["Profissional não encontrado."] });
+    return;
+  }
+
+  return res.status(200).json(professional);
+};
+
 //  Get all professionals of company
 const gelCompanyProfessionals = async (req, res) => {
   const reqCompany = req.company;
@@ -177,5 +192,6 @@ module.exports = {
   insertProfessional,
   updateProfissional,
   deleteProfessional,
+  gelProfessionalById,
   gelCompanyProfessionals,
 };

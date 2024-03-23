@@ -105,7 +105,22 @@ const deleteService = async (req, res) => {
   }
 };
 
-// Get company services
+// Get service of company by id
+const gelServicelById = async (req, res) => {
+  const { id } = req.params;
+
+  const service = await Service.findById(id);
+
+  // Check if professional exists
+  if (!service) {
+    res.status(404).json({ errors: ["Serviço não encontrado."] });
+    return;
+  }
+
+  return res.status(200).json(service);
+};
+
+// Get all company of services
 const getCompanyServices = async (req, res) => {
   const reqCompany = req.company;
 
@@ -138,5 +153,6 @@ module.exports = {
   insertService,
   updateService,
   deleteService,
+  gelServicelById,
   getCompanyServices,
 };

@@ -193,13 +193,13 @@ const getCompanyById = async (req, res) => {
   try {
     const company = await Company.findById(id).select("-password");
 
-    // Check if user exists
+    // Check if company exists
     if (!company) {
       res.status(404).json({ errors: ["Empresa não encontrado."] });
       return;
     }
 
-    res.status(200).json(company);
+    return res.status(200).json(company);
   } catch (error) {
     res.status(404).json({ errors: ["Empresa não encontrado."] });
     return;

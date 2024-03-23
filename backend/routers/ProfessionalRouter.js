@@ -7,6 +7,7 @@ const {
   deleteProfessional,
   updateProfissional,
   gelCompanyProfessionals,
+  gelProfessionalById,
 } = require("../controllers/ProfessionalController");
 
 // Middlewares
@@ -41,5 +42,6 @@ router.put(
 );
 router.delete("/:id", companyAuthGuard, deleteProfessional);
 router.get("/company/", companyAuthGuard, gelCompanyProfessionals);
+router.get("/company/:id", companyAuthGuard, gelProfessionalById);
 
 module.exports = router;
