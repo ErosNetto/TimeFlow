@@ -208,9 +208,10 @@ const getCompanyById = async (req, res) => {
 
 // Get all company
 const getAllCompanies = async (req, res) => {
-  const companies = await Company.find({});
-  // .sort([["createdAt"], -1])
-  // .exec();
+  const companies = await Company.find({})
+    .select("-password -email -ownerName -telephone")
+    .sort({ createdAt: -1 })
+    .exec();
 
   return res.status(200).json(companies);
 };

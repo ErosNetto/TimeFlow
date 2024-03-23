@@ -143,10 +143,39 @@ const deleteProfessional = async (req, res) => {
 };
 
 //  Get all professionals of company
-const gelAllProfessionals = async (req, res) => {};
+const gelCompanyProfessionals = async (req, res) => {
+  const reqCompany = req.company;
+
+  if (!reqCompany) {
+    return res.status(404).json({ message: "Empresa não encontrada" });
+  }
+
+  try {
+    const companyProfessionals = await Professional.find({
+      companyId: reqCompany._id,
+    })
+      .sort([["createdAt", -1]])
+      .exec();
+
+    if (companyProfessionals.length === 0) {
+      return res.status(200).json({
+        companyProfessionals,
+        message: "Sua empresa não possui nenhum profissional cadastrado!",
+      });
+    }
+
+    return res.status(200).json(companyProfessionals);
+  } catch (error) {
+    console.error("Erro ao buscar serviços da empresa:", error);
+    return res
+      .status(422)
+      .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+  }
+};
 
 module.exports = {
   insertProfessional,
   updateProfissional,
   deleteProfessional,
+  gelCompanyProfessionals,
 };

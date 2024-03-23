@@ -4,7 +4,11 @@ const { Schema } = mongoose;
 const professionalSchema = new Schema(
   {
     professionalName: String,
-    servicesPerformed: Array,
+    servicesPerformed: [
+      {
+        type: String,
+      },
+    ],
     profileImage: String,
     companyId: mongoose.ObjectId,
   },

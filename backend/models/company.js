@@ -7,10 +7,30 @@ const companySchema = new Schema(
     ownerName: String,
     telephone: String,
     category: String,
-    schedules: Object, // PUT
-    address: Object, // PUT
-    logoImage: String, // PUT
-    facadeImage: String, // PUT
+    schedules: {
+      type: Object,
+      default: {
+        Domingo: String,
+        SegundaFeira: String,
+        TerçaFeira: String,
+        QuartaFeira: String,
+        QuintaFeira: String,
+        SextaFeira: String,
+        Sábado: String,
+      },
+    },
+    address: {
+      type: Object,
+      default: {
+        road: String,
+        district: String,
+        city: String,
+        state: String,
+        zipCode: Number,
+      },
+    },
+    logoImage: String,
+    facadeImage: String,
     email: String,
     password: String,
   },

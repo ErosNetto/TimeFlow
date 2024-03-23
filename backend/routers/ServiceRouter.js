@@ -6,6 +6,7 @@ const {
   insertService,
   updateService,
   deleteService,
+  getCompanyServices,
 } = require("../controllers/ServiceController");
 
 // Middlewares
@@ -32,5 +33,6 @@ router.put(
   updateService
 );
 router.delete("/:id", companyAuthGuard, deleteService);
+router.get("/company/", companyAuthGuard, getCompanyServices);
 
 module.exports = router;

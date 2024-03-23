@@ -6,6 +6,7 @@ const {
   insertProfessional,
   deleteProfessional,
   updateProfissional,
+  gelCompanyProfessionals,
 } = require("../controllers/ProfessionalController");
 
 // Middlewares
@@ -39,5 +40,6 @@ router.put(
   updateProfissional
 );
 router.delete("/:id", companyAuthGuard, deleteProfessional);
+router.get("/company/", companyAuthGuard, gelCompanyProfessionals);
 
 module.exports = router;

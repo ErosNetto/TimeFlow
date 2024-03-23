@@ -105,8 +105,38 @@ const deleteService = async (req, res) => {
   }
 };
 
+// Get company services
+const getCompanyServices = async (req, res) => {
+  const reqCompany = req.company;
+
+  if (!reqCompany) {
+    return res.status(404).json({ message: "Empresa não encontrada" });
+  }
+
+  try {
+    const companyServices = await Service.find({ companyId: reqCompany._id })
+      .sort([["createdAt", -1]])
+      .exec();
+
+    if (companyServices.length === 0) {
+      return res.status(200).json({
+        companyServices,
+        message: "Sua empresa não possui nenhum serviço!",
+      });
+    }
+
+    return res.status(200).json(companyServices);
+  } catch (error) {
+    console.error("Erro ao buscar serviços da empresa:", error);
+    return res
+      .status(422)
+      .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+  }
+};
+
 module.exports = {
   insertService,
   updateService,
   deleteService,
+  getCompanyServices,
 };
