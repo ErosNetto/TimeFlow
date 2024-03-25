@@ -9,6 +9,7 @@ const {
   update,
   getCompanyById,
   getAllCompanies,
+  searchCompany,
 } = require("../controllers/CompanyController");
 
 // Middlewares
@@ -38,6 +39,7 @@ router.put(
   validate,
   update
 );
+router.get("/search", authGuard, searchCompany);
 router.get("/:id", authGuard, getCompanyById);
 router.get("/", authGuard, getAllCompanies);
 

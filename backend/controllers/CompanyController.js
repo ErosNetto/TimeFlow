@@ -216,6 +216,17 @@ const getAllCompanies = async (req, res) => {
   return res.status(200).json(companies);
 };
 
+// Search company by name
+const searchCompany = async (req, res) => {
+  const { q } = req.query;
+
+  const company = await Company.find({
+    companyName: new RegExp(q, "i"),
+  }).exec();
+
+  res.status(200).json(company);
+};
+
 module.exports = {
   register,
   login,
@@ -223,4 +234,5 @@ module.exports = {
   update,
   getCompanyById,
   getAllCompanies,
+  searchCompany,
 };
