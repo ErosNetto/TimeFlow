@@ -58,7 +58,7 @@ const companyUpdateValidation = () => {
       .isString()
       .withMessage("O nome da empresa precisa ser uma string")
       .isLength({ min: 1 })
-      .withMessage("O nome da empresa precisa ser ter no mínimo 1 caracter."),
+      .withMessage("O nome da empresa precisa ser ter no mínimo 1 caracteres."),
     body("ownerName")
       .optional()
       .isLength({ min: 3 })

@@ -16,25 +16,19 @@ const {
   serviceInsertValidation,
   serviceUpdateValidation,
 } = require("../middlewares/serviceValidation");
-const companyAuthGuard = require("../middlewares/company/companyAuthGuard");
+const authGuard = require("../middlewares/authGuard");
 
 // Router
-router.post(
-  "/",
-  companyAuthGuard,
-  serviceInsertValidation(),
-  validate,
-  insertService
-);
+router.post("/", authGuard, serviceInsertValidation(), validate, insertService);
 router.put(
   "/:id",
-  companyAuthGuard,
+  authGuard,
   serviceUpdateValidation(),
   validate,
   updateService
 );
-router.delete("/:id", companyAuthGuard, deleteService);
-router.get("/company/", companyAuthGuard, getCompanyServices);
-router.get("/company/:id", companyAuthGuard, gelServicelById);
+router.delete("/:id", authGuard, deleteService);
+router.get("/company/", authGuard, getCompanyServices);
+router.get("/company/:id", authGuard, gelServicelById);
 
 module.exports = router;

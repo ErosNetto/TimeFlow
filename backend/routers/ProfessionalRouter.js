@@ -16,7 +16,7 @@ const {
   professionalUpdateValidation,
 } = require("../middlewares/professionalValidation");
 const validate = require("../middlewares/handleValidation");
-const companyAuthGuard = require("../middlewares/company/companyAuthGuard");
+const authGuard = require("../middlewares/authGuard");
 
 const { imagesUpload } = require("../middlewares/imagesUpload");
 const { convertFiles } = require("../middlewares/convertFiles");
@@ -24,7 +24,7 @@ const { convertFiles } = require("../middlewares/convertFiles");
 // Router
 router.post(
   "/",
-  companyAuthGuard,
+  authGuard,
   imagesUpload.single("profileImage"),
   convertFiles,
   professionalInsertValidation(),
@@ -33,15 +33,15 @@ router.post(
 );
 router.put(
   "/:id",
-  companyAuthGuard,
+  authGuard,
   imagesUpload.single("profileImage"),
   convertFiles,
   professionalUpdateValidation(),
   validate,
   updateProfissional
 );
-router.delete("/:id", companyAuthGuard, deleteProfessional);
-router.get("/company/", companyAuthGuard, gelCompanyProfessionals);
-router.get("/company/:id", companyAuthGuard, gelProfessionalById);
+router.delete("/:id", authGuard, deleteProfessional);
+router.get("/company/", authGuard, gelCompanyProfessionals);
+router.get("/company/:id", authGuard, gelProfessionalById);
 
 module.exports = router;

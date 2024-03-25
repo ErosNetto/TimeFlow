@@ -16,14 +16,14 @@ const {
   userCreateValidation,
   userLoginValidation,
   userUpdateValidation,
-} = require("../middlewares/user/userValidations");
-const userAuthGuard = require("../middlewares/user/userAuthGuard");
+} = require("../middlewares/userValidations");
+const authGuard = require("../middlewares/authGuard");
 
 //Routes
 router.post("/register", userCreateValidation(), validate, register);
 router.post("/login", userLoginValidation(), validate, login);
-router.get("/profile", userAuthGuard, getCurrentUser);
-router.put("/", userAuthGuard, userUpdateValidation(), validate, update);
+router.get("/profile", authGuard, getCurrentUser);
+router.put("/", authGuard, userUpdateValidation(), validate, update);
 router.get("/:id", getUserById);
 
 module.exports = router;

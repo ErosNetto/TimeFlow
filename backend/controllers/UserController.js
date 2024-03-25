@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 
 // const mongoose = require("mongoose");
 
-const jwtSecret = process.env.JWT_SECRET_USER;
+const jwtSecret = process.env.JWT_SECRET;
 const tokenExpires = process.env.TOKEN_EXPIRES;
 
 // Generate user token
-const generateToken = (id) => {
-  return jwt.sign({ id }, jwtSecret, {
+const generateToken = (id, userType) => {
+  return jwt.sign({ id, type: userType }, jwtSecret, {
     expiresIn: tokenExpires,
   });
 };
@@ -50,7 +50,7 @@ const register = async (req, res) => {
   // Return user with token
   res.status(201).json({
     _id: newUser._id,
-    token: generateToken(newUser._id),
+    token: generateToken(newUser._id, "user"),
   });
 };
 
@@ -75,7 +75,7 @@ const login = async (req, res) => {
   // Return user with token
   res.status(201).json({
     _id: user._id,
-    token: generateToken(user._id),
+    token: generateToken(user._id, "user"),
   });
 };
 

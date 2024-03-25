@@ -17,18 +17,18 @@ const {
   companyCreateValidation,
   companyLoginValidation,
   companyUpdateValidation,
-} = require("../middlewares/company/companyValidations");
-const companyAuthGuard = require("../middlewares/company/companyAuthGuard");
+} = require("../middlewares/companyValidations");
+const authGuard = require("../middlewares/authGuard");
 const { imagesUpload } = require("../middlewares/imagesUpload");
 const { convertFiles } = require("../middlewares/convertFiles");
 
 // Routes
 router.post("/register", companyCreateValidation(), validate, register);
 router.post("/login", companyLoginValidation(), validate, login);
-router.get("/profile", companyAuthGuard, getCurrentCompany);
+router.get("/profile", authGuard, getCurrentCompany);
 router.put(
   "/",
-  companyAuthGuard,
+  authGuard,
   imagesUpload.fields([
     { name: "logoImage", maxCount: 1 },
     { name: "facadeImage", maxCount: 1 },
@@ -38,7 +38,7 @@ router.put(
   validate,
   update
 );
-router.get("/:id", companyAuthGuard, getCompanyById);
-router.get("/", companyAuthGuard, getAllCompanies);
+router.get("/:id", authGuard, getCompanyById);
+router.get("/", authGuard, getAllCompanies);
 
 module.exports = router;

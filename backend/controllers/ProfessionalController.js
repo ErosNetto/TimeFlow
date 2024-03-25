@@ -1,7 +1,7 @@
 const Professional = require("../models/Professional");
 const Company = require("../models/Company");
 
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 const { deleteImages } = require("../utils/deleteImages");
 
@@ -39,7 +39,7 @@ const insertProfessional = async (req, res) => {
 const updateProfissional = async (req, res) => {
   try {
     const { id } = req.params;
-    const { professionalName, servicesPerformed, profileImage } = req.body;
+    const { professionalName, servicesPerformed } = req.body;
 
     const reqCompany = req.company;
 

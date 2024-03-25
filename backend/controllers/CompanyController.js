@@ -7,12 +7,12 @@ const jwt = require("jsonwebtoken");
 
 const { deleteImages } = require("../utils/deleteImages");
 
-const jwtSecret = process.env.JWT_SECRET_COMPANY;
+const jwtSecret = process.env.JWT_SECRET;
 const tokenExpires = process.env.TOKEN_EXPIRES;
 
 // Generate user token
-const generateToken = (id) => {
-  return jwt.sign({ id }, jwtSecret, {
+const generateToken = (id, userType) => {
+  return jwt.sign({ id, type: userType }, jwtSecret, {
     expiresIn: tokenExpires,
   });
 };
@@ -54,7 +54,7 @@ const register = async (req, res) => {
   // Return company with token
   res.status(201).json({
     _id: newCompany._id,
-    token: generateToken(newCompany._id),
+    token: generateToken(newCompany._id, "company"),
   });
 };
 
@@ -78,7 +78,7 @@ const login = async (req, res) => {
   // Return user with token
   res.status(201).json({
     _id: company._id,
-    token: generateToken(company._id),
+    token: generateToken(company._id, "company"),
   });
 };
 

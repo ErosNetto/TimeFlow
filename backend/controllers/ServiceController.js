@@ -1,7 +1,7 @@
 const Service = require("../models/Service");
 const Company = require("../models/Company");
 
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 // Create a service, with an company related to it
 const insertService = async (req, res) => {
