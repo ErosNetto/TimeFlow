@@ -62,6 +62,90 @@ const userMakeSchedule = async (req, res) => {
   }
 };
 
+// Get all user schedules
+const getUserSchedules = async (req, res) => {
+  const reqUser = req.user;
+
+  try {
+    const userSchedules = await Scheduling.find({ userId: reqUser._id })
+      .sort([["createdAt", -1]])
+      .exec();
+
+    if (userSchedules.length === 0) {
+      return res.status(200).json({
+        userSchedules,
+        message: "Você não possui nenhum agendamento!",
+      });
+    }
+
+    return res.status(200).json(userSchedules);
+  } catch (error) {
+    console.error("Erro ao buscar serviços da empresa:", error);
+    return res
+      .status(422)
+      .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+  }
+};
+
+// Rescheduling for the user
+const userMakeRescheduling = async (req, res) => {
+  const { id } = req.params;
+  const { date, time } = req.body;
+  const reqUser = req.user;
+
+  try {
+    const scheduling = await Scheduling.findById(id);
+
+    // Check if scheduling exists
+    if (!scheduling) {
+      res.status(404).json({ errors: ["Agendamento não encontrado!"] });
+      return;
+    }
+
+    // Check if scheduling belongs to user
+    if (!scheduling.userId.equals(reqUser._id)) {
+      res.status(422).json({
+        erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
+      });
+      return;
+    }
+
+    if (scheduling.status) {
+      scheduling.status = "Reagendado";
+    }
+
+    // Create a new scheduling
+    const newScheduling = await Scheduling.create({
+      userName: scheduling.userName,
+      date,
+      time,
+      userId: reqUser._id,
+      companyId: scheduling.companyId,
+      serviceId: scheduling.serviceId,
+      professionalId: scheduling.professionalId,
+    });
+
+    // If new scheduling was created successfully
+    if (!newScheduling) {
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+      return;
+    }
+
+    await scheduling.save();
+
+    res
+      .status(201)
+      .json({ newScheduling, message: "Reagendamento feito com sucesso!" });
+  } catch (error) {
+    res
+      .status(422)
+      .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+    return;
+  }
+};
+
 // Scheduling for the company
 const companyMakeSchedule = async (req, res) => {
   const { userName, date, time, serviceId, professionalId } = req.body;
@@ -120,5 +204,7 @@ const companyMakeSchedule = async (req, res) => {
 
 module.exports = {
   userMakeSchedule,
+  getUserSchedules,
+  userMakeRescheduling,
   companyMakeSchedule,
 };

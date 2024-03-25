@@ -14,6 +14,15 @@ const userMakeScheduleValidation = () => {
   ];
 };
 
+const userMakeReschedulingValidation = () => {
+  return [
+    body("date")
+      .isISO8601()
+      .withMessage("A data do agendamento é obrigatório."),
+    body("time").isString().withMessage("A data do agendamento é obrigatório."),
+  ];
+};
+
 const companyMakeScheduleValidation = () => {
   return [
     body("userName")
@@ -34,5 +43,6 @@ const companyMakeScheduleValidation = () => {
 
 module.exports = {
   userMakeScheduleValidation,
+  userMakeReschedulingValidation,
   companyMakeScheduleValidation,
 };
