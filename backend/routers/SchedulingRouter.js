@@ -7,6 +7,7 @@ const {
   userMakeRescheduling,
   companyMakeSchedule,
   getUserSchedules,
+  getSchedulesById,
 } = require("../controllers/SchedulingController");
 
 // Middlewares
@@ -27,6 +28,7 @@ router.post(
   userMakeSchedule
 );
 router.get("/user/", authGuard, getUserSchedules);
+router.get("/:id", authGuard, getSchedulesById);
 router.put(
   "/user/:id",
   authGuard,

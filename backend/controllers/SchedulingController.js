@@ -202,9 +202,30 @@ const companyMakeSchedule = async (req, res) => {
   }
 };
 
+// Get schedules of user by id
+const getSchedulesById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const schedules = await Scheduling.findById(id);
+
+    // Check if professional exists
+    if (!schedules) {
+      res.status(404).json({ errors: ["Agendamento não encontrado."] });
+      return;
+    }
+
+    return res.status(200).json(schedules);
+  } catch (error) {
+    res.status(404).json({ errors: ["Agendamento não encontrado."] });
+    return;
+  }
+};
+
 module.exports = {
   userMakeSchedule,
   getUserSchedules,
   userMakeRescheduling,
   companyMakeSchedule,
+  getSchedulesById,
 };
