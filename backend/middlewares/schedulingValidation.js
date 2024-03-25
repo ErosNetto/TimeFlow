@@ -14,7 +14,7 @@ const userMakeScheduleValidation = () => {
   ];
 };
 
-const userMakeReschedulingValidation = () => {
+const makeReschedulingValidation = () => {
   return [
     body("date")
       .isISO8601()
@@ -43,6 +43,6 @@ const companyMakeScheduleValidation = () => {
 
 module.exports = {
   userMakeScheduleValidation,
-  userMakeReschedulingValidation,
+  makeReschedulingValidation,
   companyMakeScheduleValidation,
 };

@@ -6,17 +6,18 @@ const {
   userMakeSchedule,
   userMakeRescheduling,
   companyMakeSchedule,
-  getUserSchedules,
+  companyMakeRescheduling,
+  getAllSchedules,
   getSchedulesById,
-  getCompanySchedules,
+  cancelSchedules,
 } = require("../controllers/SchedulingController");
 
 // Middlewares
 const validate = require("../middlewares/handleValidation");
 const {
   userMakeScheduleValidation,
-  userMakeReschedulingValidation,
   companyMakeScheduleValidation,
+  makeReschedulingValidation,
 } = require("../middlewares/schedulingValidation");
 const authGuard = require("../middlewares/authGuard");
 
@@ -35,15 +36,24 @@ router.post(
   validate,
   companyMakeSchedule
 );
-router.get("/user/", authGuard, getUserSchedules);
-router.get("/company/", authGuard, getCompanySchedules);
+router.get("/", authGuard, getAllSchedules);
+// router.get("/user/", authGuard, getUserSchedules);
+// router.get("/company/", authGuard, getCompanySchedules);
 router.get("/:id", authGuard, getSchedulesById);
+router.delete("/:id", authGuard, cancelSchedules);
 router.put(
   "/user/:id",
   authGuard,
-  userMakeReschedulingValidation(),
+  makeReschedulingValidation(),
   validate,
   userMakeRescheduling
+);
+router.put(
+  "/company/:id",
+  authGuard,
+  makeReschedulingValidation(),
+  validate,
+  companyMakeRescheduling
 );
 
 module.exports = router;
