@@ -202,6 +202,33 @@ const companyMakeSchedule = async (req, res) => {
   }
 };
 
+// Get all company schedules
+const getCompanySchedules = async (req, res) => {
+  const reqCompany = req.company;
+
+  try {
+    const companySchedules = await Scheduling.find({
+      companyId: reqCompany._id,
+    })
+      .sort([["createdAt", -1]])
+      .exec();
+
+    if (companySchedules.length === 0) {
+      return res.status(200).json({
+        companySchedules,
+        message: "Sua empresa não possui nenhum agendamento!",
+      });
+    }
+
+    return res.status(200).json(companySchedules);
+  } catch (error) {
+    console.error("Erro ao buscar serviços da empresa:", error);
+    return res
+      .status(422)
+      .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+  }
+};
+
 // Get schedules of user by id
 const getSchedulesById = async (req, res) => {
   const { id } = req.params;
@@ -227,5 +254,6 @@ module.exports = {
   getUserSchedules,
   userMakeRescheduling,
   companyMakeSchedule,
+  getCompanySchedules,
   getSchedulesById,
 };
