@@ -85,10 +85,6 @@ const userMakeRescheduling = async (req, res) => {
       return;
     }
 
-    if (scheduling.status) {
-      scheduling.status = "Reagendado";
-    }
-
     // Create a new scheduling
     const newScheduling = await Scheduling.create({
       userName: scheduling.userName,
@@ -108,7 +104,7 @@ const userMakeRescheduling = async (req, res) => {
       return;
     }
 
-    await scheduling.save();
+    await Scheduling.findByIdAndDelete(id);
 
     res
       .status(201)
@@ -200,10 +196,6 @@ const companyMakeRescheduling = async (req, res) => {
       return;
     }
 
-    if (scheduling.status) {
-      scheduling.status = "Reagendado";
-    }
-
     // Create a new scheduling
     const newScheduling = await Scheduling.create({
       userName: scheduling.userName,
@@ -223,12 +215,13 @@ const companyMakeRescheduling = async (req, res) => {
       return;
     }
 
-    await scheduling.save();
+    await Scheduling.findByIdAndDelete(id);
 
     res
       .status(201)
       .json({ newScheduling, message: "Reagendamento feito com sucesso!" });
   } catch (error) {
+    console.log(error);
     res
       .status(422)
       .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
