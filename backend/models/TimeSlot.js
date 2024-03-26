@@ -2,13 +2,20 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const timeSlotSchema = new Schema({
-  date: Date, // Data e hora do slot
-  dayOfWeek: String, // Dia da semana (ex: "Segunda-feira")
+  date: Date,
   startTime: String,
-  status: String,
+  status: {
+    type: String,
+    default: "indisponivel",
+  },
   companyId: mongoose.ObjectId,
 });
 
 const TimeSlot = mongoose.model("TimeSlot", timeSlotSchema);
 
 module.exports = TimeSlot;
+
+/*
+ status: 'disponivel'
+ status: 'indisponivel'
+*/

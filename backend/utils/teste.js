@@ -74,8 +74,15 @@ function generateTimeSlots(schedules, startDate, endDate) {
       );
 
       while (startDateWithTime < endDateWithTime) {
+        // Adicionando data completa além do dia da semana
+        const formattedDate = currentDate.toLocaleDateString("pt-BR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
         timeSlots.push({
-          day: day.charAt(0).toUpperCase() + day.slice(1), // Convertendo a primeira letra para maiúscula
+          // day: day.charAt(0).toUpperCase() + day.slice(1), // Convertendo a primeira letra para maiúscula
+          date: formattedDate,
           startTime: startDateWithTime.toLocaleTimeString("pt-BR", {
             hour: "2-digit",
             minute: "2-digit",
@@ -113,4 +120,4 @@ const endDate = new Date(
 
 const timeSlotsForMonth = generateTimeSlots(schedules, today, endDate);
 
-console.log(timeSlotsForMonth, endDate);
+console.log(timeSlotsForMonth);
