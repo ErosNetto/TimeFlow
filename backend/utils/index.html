@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo de Calendário</title>
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
+    <script>
+      $(function () {
+        $.datepicker.regional["pt-BR"] = {
+          closeText: "Fechar",
+          prevText: "&#x3C;Anterior",
+          nextText: "Próximo&#x3E;",
+          currentText: "Hoje",
+          monthNames: [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro",
+          ],
+          monthNamesShort: [
+            "Jan",
+            "Fev",
+            "Mar",
+            "Abr",
+            "Mai",
+            "Jun",
+            "Jul",
+            "Ago",
+            "Set",
+            "Out",
+            "Nov",
+            "Dez",
+          ],
+          dayNames: [
+            "Domingo",
+            "Segunda-feira",
+            "Terça-feira",
+            "Quarta-feira",
+            "Quinta-feira",
+            "Sexta-feira",
+            "Sábado",
+          ],
+          dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+          dayNamesMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+          weekHeader: "Sm",
+          dateFormat: "DD, dd/mm/yy", // Formato da data com o dia da semana
+          firstDay: 0,
+          isRTL: false,
+          showMonthAfterYear: false,
+          yearSuffix: "",
+        };
+        $.datepicker.setDefaults($.datepicker.regional["pt-BR"]);
+
+        $(function () {
+          // Defina a opção regional para o datepicker em português
+          $.datepicker.setDefaults($.datepicker.regional["pt-BR"]);
+
+          // Lista de feriados no Brasil (pode ser expandida)
+          var feriados = {
+            "1/1": "Ano Novo",
+            "3/29": "Teste",
+            "4/21": "Tiradentes",
+            "5/1": "Dia do Trabalho",
+            "9/7": "Independência do Brasil",
+            "10/12": "Nossa Senhora Aparecida",
+            "11/2": "Finados",
+            "11/15": "Proclamação da República",
+            "12/25": "Natal",
+            // Adicione mais feriados conforme necessário
+          };
+
+          // Inicialize o datepicker em um elemento div vazio
+          $("#calendar").datepicker({
+            defaultDate: new Date(), // Define o calendário padrão como o dia atual
+            minDate: 0,
+            beforeShowDay: function (date) {
+              // Obtém a data em formato de string MM/DD
+              var month = date.getMonth() + 1; // Mês começa do zero
+              var day = date.getDate();
+              var dateString = month + "/" + day;
+              let teste = false;
+
+              // Verifica se a data é um domingo (dia da semana 0)
+              if (date.getDay() === 0) {
+                // Retorna um array com a classe CSS para desabilitar o dia e um título com o nome "Fechado" para domingos
+                return [teste, "fechado", "Fechado"];
+              }
+
+              // Verifica se a data é um feriado
+              if (feriados[dateString]) {
+                // Retorna um array com a classe CSS para desabilitar o dia e um título com o nome do feriado
+                return [false, "fechado", feriados[dateString]];
+              }
+
+              // Retorna um array vazio para habilitar o dia
+              return [true, ""];
+            },
+            onSelect: function (dateText) {
+              console.log("Data selecionada:", dateText); // Exemplo de ação ao selecionar uma data
+            },
+          });
+        });
+      });
+    </script>
+    <style>
+      /* Estilos para centralizar o calendário */
+      #calendar {
+        font-family: Arial, sans-serif;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        width: 300px; /* Largura do calendário */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="calendar"></div>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo de Calendário</title>
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
+    <script>
+      $(function () {
+        $.datepicker.regional["pt-BR"] = {
+          closeText: "Fechar",
+          prevText: "&#x3C;Anterior",
+          nextText: "Próximo&#x3E;",
+          currentText: "Hoje",
+          monthNames: [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro",
+          ],
+          monthNamesShort: [
+            "Jan",
+            "Fev",
+            "Mar",
+            "Abr",
+            "Mai",
+            "Jun",
+            "Jul",
+            "Ago",
+            "Set",
+            "Out",
+            "Nov",
+            "Dez",
+          ],
+          dayNames: [
+            "Domingo",
+            "Segunda-feira",
+            "Terça-feira",
+            "Quarta-feira",
+            "Quinta-feira",
+            "Sexta-feira",
+            "Sábado",
+          ],
+          dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+          dayNamesMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+          weekHeader: "Sm",
+          dateFormat: "DD, dd/mm/yy", // Formato da data com o dia da semana
+          firstDay: 0,
+          isRTL: false,
+          showMonthAfterYear: false,
+          yearSuffix: "",
+        };
+        $.datepicker.setDefaults($.datepicker.regional["pt-BR"]);
+
+        // Defina os horários marcados
+        var horariosMarcados = ["09:00", "10:30", "14:00", "16:30"];
+
+        // Inicialize o Datepicker com o Timepicker
+        $("#calendar").datetimepicker({
+          dateFormat: "DD, dd/mm/yy", // Formato da data com o dia da semana
+          timeFormat: "HH:mm", // Formato do horário
+          minDate: 0,
+          beforeShowDay: function (date) {
+            var day = date.getDay();
+            var formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
+            if (day == 0 || day == 6) {
+              // Marcar horários apenas para dias úteis (segunda a sexta)
+              return [false, ""];
+            }
+            var marked =
+              $.inArray(formattedDate + " 09:00:00", horariosMarcados) > -1 ||
+              $.inArray(formattedDate + " 10:30:00", horariosMarcados) > -1 ||
+              $.inArray(formattedDate + " 14:00:00", horariosMarcados) > -1 ||
+              $.inArray(formattedDate + " 16:30:00", horariosMarcados) > -1;
+            return [true, marked ? "marked" : ""];
+          },
+          onSelect: function (dateText) {
+            console.log("Data selecionada:", dateText); // Exemplo de ação ao selecionar uma data
+          },
+        });
+      });
+    </script>
+    <style>
+      /* Estilos para centralizar o calendário */
+      #calendar {
+        font-family: Arial, sans-serif;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        width: 300px; /* Largura do calendário */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .marked a.ui-state-default {
+        background-color: #ffffcc !important; /* Cor de fundo dos horários marcados */
+        color: #000000 !important; /* Cor do texto dos horários marcados */
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="calendar"></div>
+  </body>
+</html> -->
