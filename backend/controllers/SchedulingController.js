@@ -60,6 +60,14 @@ const userMakeSchedule = async (req, res) => {
       professionalId: professional._id,
     });
 
+    // If timeSlot was created successfully
+    if (!newTimeSlot) {
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+      return;
+    }
+
     // Create a scheduling
     const newScheduling = await Scheduling.create({
       userName: user.userName,
@@ -71,8 +79,9 @@ const userMakeSchedule = async (req, res) => {
       professionalId: professional._id,
     });
 
-    // If scheduling or timeSlot was created successfully
-    if (!newTimeSlot || !newScheduling) {
+    // If scheduling was created successfully
+    if (!newScheduling) {
+      await TimeSlot.findByIdAndDelete(newTimeSlot._id);
       res
         .status(422)
         .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
@@ -93,7 +102,7 @@ const userMakeSchedule = async (req, res) => {
 // Rescheduling for the user
 const userMakeRescheduling = async (req, res) => {
   const { id } = req.params;
-  const { date, time } = req.body;
+  const { date, startTime, professionalId } = req.body;
   const reqUser = req.user;
 
   try {
@@ -113,25 +122,69 @@ const userMakeRescheduling = async (req, res) => {
       return;
     }
 
-    // Create a new scheduling
-    const newScheduling = await Scheduling.create({
-      userName: scheduling.userName,
+    const existingTimeSlot = await TimeSlot.findOne({
       date,
-      time,
-      userId: reqUser._id,
+      startTime,
       companyId: scheduling.companyId,
-      serviceId: scheduling.serviceId,
+      professionalId,
+    });
+
+    if (existingTimeSlot) {
+      return res.status(400).json({ error: "Esse horário está indisponivel!" });
+    }
+
+    const timeSlot = await TimeSlot.findOne({
+      date: scheduling.date,
+      startTime: scheduling.startTime,
+      companyId: scheduling.companyId,
       professionalId: scheduling.professionalId,
     });
 
-    // If new scheduling was created successfully
-    if (!newScheduling) {
+    // Check if timeSlot exists
+    if (!timeSlot) {
+      res.status(404).json({
+        erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
+      });
+      return;
+    }
+
+    // Create a timeSlot
+    const newTimeSlot = await TimeSlot.create({
+      date,
+      startTime,
+      companyId: scheduling.companyId,
+      professionalId,
+    });
+
+    // If timeSlot was created successfully
+    if (!newTimeSlot) {
       res
         .status(422)
         .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
       return;
     }
 
+    // Create a new scheduling
+    const newScheduling = await Scheduling.create({
+      userName: scheduling.userName,
+      date,
+      startTime,
+      userId: reqUser._id,
+      companyId: scheduling.companyId,
+      serviceId: scheduling.serviceId,
+      professionalId,
+    });
+
+    // If scheduling was created successfully
+    if (!newScheduling) {
+      await TimeSlot.findByIdAndDelete(newTimeSlot._id);
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+      return;
+    }
+
+    await TimeSlot.findByIdAndDelete(timeSlot._id);
     await Scheduling.findByIdAndDelete(id);
 
     res
@@ -199,18 +252,27 @@ const companyMakeSchedule = async (req, res) => {
       professionalId: professional._id,
     });
 
+    // If timeSlot was created successfully
+    if (!newTimeSlot) {
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+      return;
+    }
+
     // Create a scheduling
     const newScheduling = await Scheduling.create({
       userName,
       date,
-      time,
+      startTime,
       companyId: company._id,
       serviceId: service._id,
       professionalId: professional._id,
     });
 
-    // If scheduling or timeSlot was created successfully
-    if (!newTimeSlot || !newScheduling) {
+    // If scheduling was created successfully
+    if (!newScheduling) {
+      await TimeSlot.findByIdAndDelete(newTimeSlot._id);
       res
         .status(422)
         .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
@@ -231,7 +293,7 @@ const companyMakeSchedule = async (req, res) => {
 // Rescheduling for the company
 const companyMakeRescheduling = async (req, res) => {
   const { id } = req.params;
-  const { date, time } = req.body;
+  const { date, startTime, professionalId } = req.body;
   const reqCompany = req.company;
 
   try {
@@ -251,25 +313,68 @@ const companyMakeRescheduling = async (req, res) => {
       return;
     }
 
-    // Create a new scheduling
-    const newScheduling = await Scheduling.create({
-      userName: scheduling.userName,
+    const existingTimeSlot = await TimeSlot.findOne({
       date,
-      time,
-      userId: scheduling._id,
-      companyId: reqCompany._id,
-      serviceId: scheduling.serviceId,
+      startTime,
+      companyId: scheduling.companyId,
+      professionalId,
+    });
+
+    if (existingTimeSlot) {
+      return res.status(400).json({ error: "Esse horário está indisponivel!" });
+    }
+
+    const timeSlot = await TimeSlot.findOne({
+      date: scheduling.date,
+      startTime: scheduling.startTime,
+      companyId: scheduling.companyId,
       professionalId: scheduling.professionalId,
     });
 
-    // If new scheduling was created successfully
-    if (!newScheduling) {
+    // Check if timeSlot exists
+    if (!timeSlot) {
+      res.status(404).json({
+        erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
+      });
+      return;
+    }
+
+    // Create a timeSlot
+    const newTimeSlot = await TimeSlot.create({
+      date,
+      startTime,
+      companyId: scheduling.companyId,
+      professionalId,
+    });
+
+    // If timeSlot was created successfully
+    if (!newTimeSlot) {
       res
         .status(422)
         .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
       return;
     }
 
+    // Create a new scheduling
+    const newScheduling = await Scheduling.create({
+      userName: scheduling.userName,
+      date,
+      startTime,
+      companyId: reqCompany._id,
+      serviceId: scheduling.serviceId,
+      professionalId,
+    });
+
+    // If scheduling was created successfully
+    if (!newScheduling) {
+      await TimeSlot.findByIdAndDelete(newTimeSlot._id);
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+      return;
+    }
+
+    await TimeSlot.findByIdAndDelete(timeSlot._id);
     await Scheduling.findByIdAndDelete(id);
 
     res

@@ -2,7 +2,17 @@ const { body } = require("express-validator");
 
 const userMakeScheduleValidation = () => {
   return [
-    body("date").isISO8601().withMessage("A data é obrigatória."),
+    body("date")
+      .isISO8601()
+      .withMessage("A data é obrigatória.")
+      .custom((value) => {
+        const selectedDate = new Date(value);
+        const currentDate = new Date();
+        selectedDate.setUTCHours(0, 0, 0, 0);
+        currentDate.setUTCHours(0, 0, 0, 0);
+        return selectedDate >= currentDate;
+      })
+      .withMessage("A data selecionada deve ser hoje ou uma data futura."),
     body("startTime")
       .isString()
       .withMessage("O horário do agendamento é obrigatório."),
@@ -18,7 +28,15 @@ const makeReschedulingValidation = () => {
   return [
     body("date")
       .isISO8601()
-      .withMessage("A data do agendamento é obrigatório."),
+      .withMessage("A data é obrigatória.")
+      .custom((value) => {
+        const selectedDate = new Date(value);
+        const currentDate = new Date();
+        selectedDate.setUTCHours(0, 0, 0, 0);
+        currentDate.setUTCHours(0, 0, 0, 0);
+        return selectedDate >= currentDate;
+      })
+      .withMessage("A data selecionada deve ser hoje ou uma data futura."),
     body("startTime")
       .isString()
       .withMessage("O horário do agendamento é obrigatório."),
@@ -34,7 +52,15 @@ const companyMakeScheduleValidation = () => {
       .withMessage("O nome do cliente precisa ser ter no mínimo 3 caracteres."),
     body("date")
       .isISO8601()
-      .withMessage("A data do agendamento é obrigatório."),
+      .withMessage("A data é obrigatória.")
+      .custom((value) => {
+        const selectedDate = new Date(value);
+        const currentDate = new Date();
+        selectedDate.setUTCHours(0, 0, 0, 0);
+        currentDate.setUTCHours(0, 0, 0, 0);
+        return selectedDate >= currentDate;
+      })
+      .withMessage("A data selecionada deve ser hoje ou uma data futura."),
     body("startTime")
       .isString()
       .withMessage("O horário do agendamento é obrigatório."),
