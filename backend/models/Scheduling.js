@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 const schedulingSchema = new Schema(
   {
     userName: String,
-    timeSlot: mongoose.ObjectId,
+    date: Date,
+    startTime: String,
     userId: mongoose.ObjectId,
     companyId: mongoose.ObjectId,
     serviceId: mongoose.ObjectId,

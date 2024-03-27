@@ -1,13 +1,15 @@
 const TimeSlot = require("../models/TimeSlot");
 const Company = require("../models/Company");
+const Professional = require("../models/Professional");
 
 // Adiciona horários indisponiveis
 // Added unavailable times
 const insertTileSlot = async (req, res) => {
-  const { date, startTime, companyId } = req.body;
+  const { date, startTime, companyId, professionalId } = req.body;
 
   try {
     const company = await Company.findById(companyId);
+    const professional = await Professional.findById(professionalId);
 
     // Check if company exists
     if (!company) {
@@ -15,10 +17,24 @@ const insertTileSlot = async (req, res) => {
       return;
     }
 
+    // Check if professional exists
+    if (!professional) {
+      res.status(404).json({ errors: ["Profissional não encontrado."] });
+      return;
+    }
+
+    if (!professional.companyId.equals(company._id)) {
+      res.status(422).json({
+        errors: ["O profissional não pertence à empresa especificada."],
+      });
+      return;
+    }
+
     const existingTimeSlot = await TimeSlot.findOne({
       date,
       startTime,
       companyId: company._id,
+      professionalId: professional._id,
     });
 
     if (existingTimeSlot) {
@@ -29,6 +45,7 @@ const insertTileSlot = async (req, res) => {
       date,
       startTime,
       companyId: company._id,
+      professionalId: professional._id,
     });
 
     // If timeSlot was created successfully

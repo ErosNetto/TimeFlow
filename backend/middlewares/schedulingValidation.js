@@ -2,10 +2,10 @@ const { body } = require("express-validator");
 
 const userMakeScheduleValidation = () => {
   return [
-    body("date")
-      .isISO8601()
-      .withMessage("A data do agendamento é obrigatório."),
-    body("time").isString().withMessage("A data do agendamento é obrigatório."),
+    body("date").isISO8601().withMessage("A data é obrigatória."),
+    body("startTime")
+      .isString()
+      .withMessage("O horário do agendamento é obrigatório."),
     body("companyId").isString().withMessage("O companyId é obrigatório."),
     body("serviceId").isString().withMessage("O serviceId é obrigatório."),
     body("professionalId")
@@ -19,7 +19,9 @@ const makeReschedulingValidation = () => {
     body("date")
       .isISO8601()
       .withMessage("A data do agendamento é obrigatório."),
-    body("time").isString().withMessage("A data do agendamento é obrigatório."),
+    body("startTime")
+      .isString()
+      .withMessage("O horário do agendamento é obrigatório."),
   ];
 };
 
@@ -33,7 +35,9 @@ const companyMakeScheduleValidation = () => {
     body("date")
       .isISO8601()
       .withMessage("A data do agendamento é obrigatório."),
-    body("time").isString().withMessage("A data do agendamento é obrigatório."),
+    body("startTime")
+      .isString()
+      .withMessage("O horário do agendamento é obrigatório."),
     body("serviceId").isString().withMessage("O serviceId é obrigatório."),
     body("professionalId")
       .isString()
