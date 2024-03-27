@@ -3,13 +3,13 @@ const router = express.Router();
 
 // Controller
 const {
-  userMakeSchedule,
+  userMakeScheduling,
   userMakeRescheduling,
-  companyMakeSchedule,
+  companyMakeScheduling,
   companyMakeRescheduling,
-  getAllSchedules,
-  getSchedulesById,
-  cancelSchedules,
+  getAllScheduling,
+  getSchedulingById,
+  cancelScheduling,
 } = require("../controllers/SchedulingController");
 
 // Middlewares
@@ -27,20 +27,18 @@ router.post(
   authGuard,
   userMakeScheduleValidation(),
   validate,
-  userMakeSchedule
+  userMakeScheduling
 );
 router.post(
   "/company/",
   authGuard,
   companyMakeScheduleValidation(),
   validate,
-  companyMakeSchedule
+  companyMakeScheduling
 );
-router.get("/", authGuard, getAllSchedules);
-// router.get("/user/", authGuard, getUserSchedules);
-// router.get("/company/", authGuard, getCompanySchedules);
-router.get("/:id", authGuard, getSchedulesById);
-router.delete("/:id", authGuard, cancelSchedules);
+router.get("/", authGuard, getAllScheduling);
+router.get("/:id", authGuard, getSchedulingById);
+router.delete("/:id", authGuard, cancelScheduling);
 router.put(
   "/user/:id",
   authGuard,

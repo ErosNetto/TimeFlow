@@ -6,7 +6,7 @@ const Professional = require("../models/Professional");
 const Company = require("../models/Company");
 
 // Scheduling for the user
-const userMakeSchedule = async (req, res) => {
+const userMakeScheduling = async (req, res) => {
   const { date, startTime, companyId, serviceId, professionalId } = req.body;
   const reqUser = req.user;
 
@@ -199,7 +199,7 @@ const userMakeRescheduling = async (req, res) => {
 };
 
 // Scheduling for the company
-const companyMakeSchedule = async (req, res) => {
+const companyMakeScheduling = async (req, res) => {
   const { userName, date, startTime, serviceId, professionalId } = req.body;
   const reqCompany = req.company;
 
@@ -389,10 +389,10 @@ const companyMakeRescheduling = async (req, res) => {
   }
 };
 
-// Get all schedules for company or user
-const getAllSchedules = async (req, res) => {
+// Get all scheduling for company or user
+const getAllScheduling = async (req, res) => {
   try {
-    const schedules = await Scheduling.find({
+    const scheduling = await Scheduling.find({
       $or: [
         req.company ? { companyId: req.company._id } : { userId: req.user._id },
       ],
@@ -400,16 +400,16 @@ const getAllSchedules = async (req, res) => {
       .sort([["createdAt", -1]])
       .exec();
 
-    if (schedules.length === 0) {
+    if (scheduling.length === 0) {
       return res.status(200).json({
-        schedules,
+        scheduling,
         message: req.company
           ? "Sua empresa não possui nenhum agendamento!"
           : "Você não possui nenhum agendamento!",
       });
     }
 
-    return res.status(200).json(schedules);
+    return res.status(200).json(scheduling);
   } catch (error) {
     console.error("Erro ao buscar agendamentos:", error);
     return res
@@ -418,49 +418,49 @@ const getAllSchedules = async (req, res) => {
   }
 };
 
-// Get schedules of user by id
-const getSchedulesById = async (req, res) => {
+// Get scheduling by id
+const getSchedulingById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const schedules = await Scheduling.findById(id);
+    const scheduling = await Scheduling.findById(id);
 
     // Check if professional exists
-    if (!schedules) {
+    if (!scheduling) {
       res.status(404).json({ errors: ["Agendamento não encontrado."] });
       return;
     }
 
-    return res.status(200).json(schedules);
+    return res.status(200).json(scheduling);
   } catch (error) {
     res.status(404).json({ errors: ["Agendamento não encontrado."] });
     return;
   }
 };
 
-// Cancel schedules
-const cancelSchedules = async (req, res) => {
+// Cancel scheduling
+const cancelScheduling = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const schedules = await Scheduling.findById(id);
+    const scheduling = await Scheduling.findById(id);
 
     // Check if service exist
-    if (!schedules) {
+    if (!scheduling) {
       res.status(404).json({ errors: ["Agendamento não encontrado!"] });
       return;
     }
 
-    // Check if schedules belongs to company or user
+    // Check if scheduling belongs to company or user
     if (req.user) {
-      if (!schedules.userId.equals(req.user._id)) {
+      if (!scheduling.userId.equals(req.user._id)) {
         res.status(422).json({
           erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
         });
         return;
       }
     } else {
-      if (!schedules.companyId.equals(req.company._id)) {
+      if (!scheduling.companyId.equals(req.company._id)) {
         res.status(422).json({
           erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
         });
@@ -468,10 +468,26 @@ const cancelSchedules = async (req, res) => {
       }
     }
 
-    await Scheduling.findByIdAndDelete(schedules._id);
+    const timeSlot = await TimeSlot.findOne({
+      date: scheduling.date,
+      startTime: scheduling.startTime,
+      companyId: scheduling.companyId,
+      professionalId: scheduling.professionalId,
+    });
+
+    // Check if timeSlot exists
+    if (!timeSlot) {
+      res.status(404).json({
+        erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
+      });
+      return;
+    }
+
+    await Scheduling.findByIdAndDelete(scheduling._id);
+    await TimeSlot.findByIdAndDelete(timeSlot._id);
 
     res.status(200).json({
-      id: schedules._id,
+      id: scheduling._id,
       message: "Agendamento excluido com sucesso.",
     });
   } catch (error) {
@@ -481,38 +497,11 @@ const cancelSchedules = async (req, res) => {
 };
 
 module.exports = {
-  userMakeSchedule,
+  userMakeScheduling,
   userMakeRescheduling,
-  companyMakeSchedule,
+  companyMakeScheduling,
   companyMakeRescheduling,
-  getAllSchedules,
-  getSchedulesById,
-  cancelSchedules,
+  getAllScheduling,
+  getSchedulingById,
+  cancelScheduling,
 };
-
-/*
-// Get all user schedules
-const getUserSchedules = async (req, res) => {
-  const reqUser = req.user;
-
-  try {
-    const userSchedules = await Scheduling.find({ userId: reqUser._id })
-      .sort([["createdAt", -1]])
-      .exec();
-
-    if (userSchedules.length === 0) {
-      return res.status(200).json({
-        userSchedules,
-        message: "Você não possui nenhum agendamento!",
-      });
-    }
-
-    return res.status(200).json(userSchedules);
-  } catch (error) {
-    console.error("Erro ao buscar serviços da empresa:", error);
-    return res
-      .status(422)
-      .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
-  }
-};
-*/
