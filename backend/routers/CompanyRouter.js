@@ -18,7 +18,7 @@ const {
   companyCreateValidation,
   companyLoginValidation,
   companyUpdateValidation,
-} = require("../middlewares/companyValidations");
+} = require("../middlewares/companyValidation");
 const authGuard = require("../middlewares/authGuard");
 const { imagesUpload } = require("../middlewares/imagesUpload");
 const { convertFiles } = require("../middlewares/convertFiles");
