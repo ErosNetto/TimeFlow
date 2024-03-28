@@ -8,31 +8,44 @@ const { deleteImages } = require("../utils/deleteImages");
 // Create a professional, with an company related to it
 const insertProfessional = async (req, res) => {
   const { professionalName, servicesPerformed } = req.body;
-  const profileImage = req.file.filename;
 
-  const reqCompany = req.company;
+  try {
+    const profileImage = req.file.filename;
 
-  const company = await Company.findById(reqCompany.id);
+    const reqCompany = req.company;
 
-  // Create a professional
-  const newProfessional = await Professional.create({
-    professionalName,
-    servicesPerformed,
-    profileImage,
-    companyId: company._id,
-  });
+    const company = await Company.findById(reqCompany.id);
 
-  // If professional was created successfully, return data
-  if (!newProfessional) {
-    res.status(422).json({
-      erros: ["Houve um problema, por favor tente novamente mais tarde."],
+    // Create a professional
+    const newProfessional = await Professional.create({
+      professionalName,
+      servicesPerformed,
+      profileImage,
+      companyId: company._id,
     });
-    return;
-  }
 
-  res
-    .status(201)
-    .json({ newProfessional, message: "Profissional adicionado com sucesso!" });
+    // If professional was created successfully, return data
+    if (!newProfessional) {
+      if (req.file) {
+        await deleteImages("professionals", req.file.filename);
+      }
+      res.status(422).json({
+        erros: ["Houve um problema, por favor tente novamente mais tarde."],
+      });
+      return;
+    }
+
+    res.status(201).json({
+      newProfessional,
+      message: "Profissional adicionado com sucesso!",
+    });
+  } catch (error) {
+    if (req.file) {
+      await deleteImages("professionals", req.file.filename);
+    }
+    console.error(error);
+    res.status(500).send("Erro ao criar um profissional.");
+  }
 };
 
 // Update a service and profile photo from the backend
@@ -54,21 +67,21 @@ const updateProfissional = async (req, res) => {
 
     // Check if professional exists
     if (!professional) {
-      res.status(404).json({ errors: ["Profissional não encontrado!"] });
       if (newProfileImage) {
         await deleteImages("professionals", newProfileImage);
       }
+      res.status(404).json({ errors: ["Profissional não encontrado!"] });
       return;
     }
 
     // Check if professional belongs to company
     if (!professional.companyId.equals(reqCompany._id)) {
-      res.status(422).json({
-        erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
-      });
       if (newProfileImage) {
         await deleteImages("professionals", newProfileImage);
       }
+      res.status(422).json({
+        erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
+      });
       return;
     }
 
@@ -97,8 +110,11 @@ const updateProfissional = async (req, res) => {
 
     res.status(200).json({ professional, message: "Atualizado com sucesso!" });
   } catch (error) {
+    if (req.file) {
+      await deleteImages("professionals", req.file.filename);
+    }
     console.error(error);
-    res.status(500).send("Erro ao editar o perfil.");
+    res.status(500).send("Erro ao editar o profissional.");
   }
 };
 

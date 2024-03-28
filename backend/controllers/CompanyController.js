@@ -121,6 +121,18 @@ const update = async (req, res) => {
 
     const company = await Company.findById(reqCompany._id).select("-password");
 
+    // Check if company exists
+    if (!company) {
+      if (newLogoImage) {
+        await deleteImages("company", newLogoImage);
+      }
+      if (newFacadeImage) {
+        await deleteImages("company", newFacadeImage);
+      }
+      res.status(404).json({ errors: ["Empresa não encontrado."] });
+      return;
+    }
+
     if (companyName) {
       company.companyName = companyName;
     }
@@ -181,6 +193,15 @@ const update = async (req, res) => {
 
     res.status(200).json({ company, message: "Atualizado com sucesso!" });
   } catch (error) {
+    if (req.files) {
+      if (req.files.logoImage) {
+        await deleteImages("company", req.files.logoImage[0].filename);
+      }
+
+      if (req.files.facadeImage) {
+        await deleteImages("company", req.files.facadeImage[0].filename);
+      }
+    }
     console.error(error);
     res.status(500).send("Erro ao editar o perfil.");
   }

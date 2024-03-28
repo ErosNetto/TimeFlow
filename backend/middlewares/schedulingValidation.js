@@ -40,6 +40,14 @@ const makeReschedulingValidation = () => {
     body("startTime")
       .isString()
       .withMessage("O horário do agendamento é obrigatório."),
+    body("reason")
+      .if((value, { req }) => !!req.user)
+      .isString()
+      .withMessage("A razão do cancelamento é obrigatório.")
+      .isLength({ min: 10 })
+      .withMessage("A razão deve ter no mínimo 10 caracteres.")
+      .isLength({ max: 100 })
+      .withMessage("A razão deve ter no máximo 100 caracteres."),
   ];
 };
 
@@ -71,8 +79,22 @@ const companyMakeScheduleValidation = () => {
   ];
 };
 
+const cancelSchedulingValidation = () => {
+  return [
+    body("reason")
+      .if((value, { req }) => !!req.user)
+      .notEmpty()
+      .withMessage("A razão do cancelamento é obrigatório.")
+      .isLength({ min: 10 })
+      .withMessage("A razão deve ter no mínimo 10 caracteres.")
+      .isLength({ max: 100 })
+      .withMessage("A razão deve ter no máximo 100 caracteres."),
+  ];
+};
+
 module.exports = {
   userMakeScheduleValidation,
   makeReschedulingValidation,
   companyMakeScheduleValidation,
+  cancelSchedulingValidation,
 };

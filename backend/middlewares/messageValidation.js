@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 
-const messageCreteValidation = () => {
+const messageCancelValidation = () => {
   return [
     body("userName").isString().withMessage("O nome do usuário é obrigatório."),
     body("message").isString().withMessage("A mensagem é obrigatório."),
@@ -16,5 +16,5 @@ const messageCreteValidation = () => {
 };
 
 module.exports = {
-  messageCreteValidation,
+  messageCancelValidation,
 };

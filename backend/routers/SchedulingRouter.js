@@ -18,6 +18,7 @@ const {
   userMakeScheduleValidation,
   companyMakeScheduleValidation,
   makeReschedulingValidation,
+  cancelSchedulingValidation,
 } = require("../middlewares/schedulingValidation");
 const authGuard = require("../middlewares/authGuard");
 
@@ -38,7 +39,13 @@ router.post(
 );
 router.get("/", authGuard, getAllScheduling);
 router.get("/:id", authGuard, getSchedulingById);
-router.delete("/:id", authGuard, cancelScheduling);
+router.delete(
+  "/:id",
+  authGuard,
+  cancelSchedulingValidation(),
+  validate,
+  cancelScheduling
+);
 router.put(
   "/user/:id",
   authGuard,

@@ -4,7 +4,11 @@ const { Schema } = mongoose;
 const messageSchema = new Schema(
   {
     userName: String,
-    message: String,
+    message: {
+      type: String,
+      enum: ["Agendado", "Reagendado", "Cancelado"],
+      required: true,
+    },
     date: Date,
     startTime: String,
     reason: {
@@ -25,3 +29,9 @@ const messageSchema = new Schema(
 const Message = mongoose.model("Message", messageSchema);
 
 module.exports = Message;
+
+// message: {
+//   "Agendado",
+//   "Reagendado",
+//   "Cancelado"
+// }

@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Service = require("../models/Service");
 const Professional = require("../models/Professional");
 const Company = require("../models/Company");
+const Message = require("../models/Message");
 
 // Scheduling for the user
 const userMakeScheduling = async (req, res) => {
@@ -88,6 +89,23 @@ const userMakeScheduling = async (req, res) => {
       return;
     }
 
+    const newMessage = await Message.create({
+      userName: user.userName,
+      message: "Agendado",
+      schedulingNewId: newScheduling._id,
+      companyId: company._id,
+    });
+
+    // If message was created successfully
+    if (!newMessage) {
+      await TimeSlot.findByIdAndDelete(newTimeSlot._id);
+      await Scheduling.findByIdAndDelete(newScheduling._id);
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+      return;
+    }
+
     res
       .status(201)
       .json({ newScheduling, message: "Agendamento feito com sucesso!" });
@@ -102,7 +120,7 @@ const userMakeScheduling = async (req, res) => {
 // Rescheduling for the user
 const userMakeRescheduling = async (req, res) => {
   const { id } = req.params;
-  const { date, startTime, professionalId } = req.body;
+  const { date, startTime, professionalId, reason } = req.body;
   const reqUser = req.user;
 
   try {
@@ -178,6 +196,26 @@ const userMakeRescheduling = async (req, res) => {
     // If scheduling was created successfully
     if (!newScheduling) {
       await TimeSlot.findByIdAndDelete(newTimeSlot._id);
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
+      return;
+    }
+
+    const newMessage = await Message.create({
+      userName: scheduling.userName,
+      message: "Reagendado",
+      date: scheduling.date,
+      startTime: scheduling.time,
+      reason,
+      schedulingNewId: newScheduling._id,
+      companyId: scheduling.companyId,
+    });
+
+    // If message was created successfully
+    if (!newMessage) {
+      await TimeSlot.findByIdAndDelete(newTimeSlot._id);
+      await Scheduling.findByIdAndDelete(newScheduling._id);
       res
         .status(422)
         .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
@@ -441,6 +479,7 @@ const getSchedulingById = async (req, res) => {
 // Cancel scheduling
 const cancelScheduling = async (req, res) => {
   const { id } = req.params;
+  const { reason } = req.body;
 
   try {
     const scheduling = await Scheduling.findById(id);
@@ -480,6 +519,22 @@ const cancelScheduling = async (req, res) => {
       res.status(404).json({
         erros: ["Ocorreu um erro, por favor tente novamente mais tarde."],
       });
+      return;
+    }
+
+    const newMessage = await Message.create({
+      userName: scheduling.userName,
+      message: "Cancelado",
+      date: scheduling.date,
+      startTime: scheduling.time,
+      reason,
+      companyId: scheduling.companyId,
+    });
+
+    if (!newMessage) {
+      res
+        .status(422)
+        .json({ errors: ["Houve um erro, por favor tente mais tarde."] });
       return;
     }
 
