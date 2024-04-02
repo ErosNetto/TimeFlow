@@ -1,15 +1,20 @@
 import "./App.css";
 
-// React router
+// React router dom
 import { Outlet } from "react-router-dom";
+
+// Components
+import Navbar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
     <div className="App">
-      <p>Navbar</p>
-      <h1>TimeFlow</h1>
-      <Outlet />
-      <p>Footer</p>
+      <Navbar />
+      <div className="container">
+        <Outlet />
+      </div>
+      <Footer />
     </div>
   );
 }
