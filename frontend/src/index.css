@@ -10,8 +10,11 @@ html {
 
 body {
   font-family: "Montserrat", sans-serif;
-  background: #251717;
+  /* background: #251717; */
   color: #fafafa;
+  background-image: url("./assets/5137894.jpg");
+  background-size: cover;
+  background-position: center center;
 }
 
 a {
@@ -25,9 +28,6 @@ a {
   justify-content: center;
   min-height: 100vh;
   padding: 0 2em;
-  /* background-image: url(${imgBack});
-  background-size: cover;
-  background-position: center center; */
 }
 
 .active {
