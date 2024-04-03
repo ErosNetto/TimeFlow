@@ -17,7 +17,7 @@ const NavBar = () => {
         <div className="navBar-right">
           <ul className="navBar-links">
             <li className="navBar-link">
-              <NavLink to="/login">Entrar / Increver-se</NavLink>
+              <NavLink to="/login">Entrar / Cadastrar</NavLink>
             </li>
             <li className="navBar-link">
               <NavLink to="/company">Empresa</NavLink>

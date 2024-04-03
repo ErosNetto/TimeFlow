@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 62.5%; /* Define o tamanho da fonte para 10 pixels */
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   background: #121212;
@@ -12,4 +16,28 @@ body {
 
 a {
   text-decoration: none;
+  cursor: pointer;
+}
+
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 2em;
+  /* background-image: url(${imgBack});
+  background-size: cover;
+  background-position: center center; */
+}
+
+.active {
+  color: red;
+}
+
+ul {
+  list-style: none;
+}
+
+input::placeholder {
+  color: rgb(173, 167, 167);
 }
