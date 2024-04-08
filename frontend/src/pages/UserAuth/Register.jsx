@@ -109,7 +109,7 @@ const Register = () => {
           <p className="testeConta">
             <span>
               Já tem uma conta?
-              <Link to="/login"> Entrar</Link>
+              <Link to="/user/login"> Entrar</Link>
             </span>
           </p>
         </form>

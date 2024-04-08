@@ -17,10 +17,10 @@ const NavBar = () => {
         <div className="navBar-right">
           <ul className="navBar-links">
             <li className="navBar-link">
-              <NavLink to="/login">Entrar / Cadastrar</NavLink>
+              <NavLink to="/user/login">Entrar / Cadastrar</NavLink>
             </li>
             <li className="navBar-link">
-              <NavLink to="/company">Empresa</NavLink>
+              <NavLink to="/company/login">Empresa</NavLink>
             </li>
           </ul>
         </div>

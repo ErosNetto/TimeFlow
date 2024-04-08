@@ -12,8 +12,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // Pages
 import Home from "./pages/Home/Home.jsx";
-import Login from "./pages/Auth/Login.jsx";
-import Register from "./pages/Auth/Register";
+import UserLogin from "./pages/UserAuth/Login.jsx";
+import UserRegister from "./pages/UserAuth/Register.jsx";
+import CompanyLogin from "./pages/CompanyAuth/Login.jsx";
+import CompanyRegister from "./pages/CompanyAuth/Register.jsx";
+
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
 
 const router = createBrowserRouter([
@@ -24,17 +27,37 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <UserLayout>
+            <UserHomePage />
+          </UserLayout>
+        ),
+      },
+      {
+        path: "/company",
+        element: (
+          <CompanyLayout>
+            <CompanyHomePage />
+          </CompanyLayout>
+        ),
       },
     ],
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: "/user/login",
+    element: <UserLogin />,
   },
   {
-    path: "/register",
-    element: <Register />,
+    path: "/user/register",
+    element: <UserRegister />,
+  },
+  {
+    path: "/company/login",
+    element: <CompanyLogin />,
+  },
+  {
+    path: "/company/register",
+    element: <CompanyRegister />,
   },
 ]);
 
