@@ -27,7 +27,7 @@ const Login = () => {
           </div>
 
           <button type="submit">Login</button>
-          <p>
+          <p className="testeConta">
             <span>
               Não possui uma conta?
               <Link to="/register"> Cadastrar</Link>

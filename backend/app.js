@@ -14,7 +14,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Solve CORS
-app.use(cors({ credentials: true, origin: process.env.CORS_ORIGIN }));
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.CORS_ORIGIN,
+    optionsSuccessStatus: 200,
+  })
+);
 
 // Upload directory
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

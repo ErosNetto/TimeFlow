@@ -3,9 +3,14 @@ import "./Auth.css";
 // Componensts
 import { Link } from "react-router-dom";
 import InputMask from "react-input-mask";
+import Message from "../../components/Message/Message";
 
 // Hooks
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+// Redux
+import { register, reset } from "../../slices/authSlice";
 
 const Register = () => {
   const [userName, setUserName] = useState("");
@@ -13,6 +18,10 @@ const Register = () => {
   const [telephone, setTelephone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,8 +34,13 @@ const Register = () => {
       confirmPassword,
     };
 
-    console.log(user);
+    dispatch(register(user));
   };
+
+  // Clean all auth states
+  useEffect(() => {
+    dispatch(reset());
+  }, [dispatch]);
 
   return (
     <div id="container">
@@ -85,8 +99,14 @@ const Register = () => {
             />
           </div>
 
-          <button type="submit">Criar conta</button>
-          <p>
+          {error && <Message msg={error} type="error" />}
+          {!loading && <button type="submit">Criar conta</button>}
+          {loading && (
+            <button type="submit" disabled>
+              Aguarde...
+            </button>
+          )}
+          <p className="testeConta">
             <span>
               Já tem uma conta?
               <Link to="/login"> Entrar</Link>
