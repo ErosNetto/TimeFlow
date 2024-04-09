@@ -4,7 +4,9 @@ const companyCreateValidation = () => {
   return [
     body("companyName")
       .isString()
-      .withMessage("O nome da empresa é obrigatório."),
+      .withMessage("O nome da empresa é obrigatório.")
+      .isLength({ min: 1 })
+      .withMessage("O nome da empresa precisa ser ter no mínimo 1 caracteres."),
     body("ownerName")
       .isString()
       .withMessage("O nome do dono da empresa é obrigatório")

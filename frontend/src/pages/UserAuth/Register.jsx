@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // Redux
-import { register, reset } from "../../slices/authSlice";
+import { register, reset } from "../../slices/authSliceUser";
 
 const Register = () => {
   const [userName, setUserName] = useState("");
@@ -21,7 +21,7 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.authUser);
 
   const handleSubmit = (e) => {
     e.preventDefault();

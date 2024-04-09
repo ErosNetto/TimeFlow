@@ -1,20 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "../services/authService";
+import authServiceCompany from "../services/authServiceCompany";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const company = JSON.parse(localStorage.getItem("company"));
 
 const initialState = {
-  user: user ? user : null,
+  company: company ? company : null,
   error: false,
   success: false,
   loading: false,
 };
 
-// Register an user and sign in
+// Register an company and sign in
 export const register = createAsyncThunk(
-  "auth/register",
-  async (user, thunkAPI) => {
-    const data = await authService.register(user);
+  "authCompany/register",
+  async (company, thunkAPI) => {
+    const data = await authServiceCompany.register(company);
 
     // Check for errors
     if (data.errors) {
@@ -25,8 +25,8 @@ export const register = createAsyncThunk(
   }
 );
 
-export const authSlice = createSlice({
-  name: "auth",
+export const authSliceCompany = createSlice({
+  name: "authCompany",
   initialState,
   reducers: {
     reset: (state) => {
@@ -55,5 +55,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { reset } = authSlice.actions;
-export default authSlice.reducer;
+export const { reset } = authSliceCompany.actions;
+export default authSliceCompany.reducer;

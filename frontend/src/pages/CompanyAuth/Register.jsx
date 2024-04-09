@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // Redux
-// import { register, reset } from "../../slices/authSlice";
+import { register, reset } from "../../slices/authSliceCompany";
 
 const Register = () => {
   const [companyName, setCompanyName] = useState("");
@@ -23,7 +23,7 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
-  // const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.authCompany);
 
   // Seta o valor da categoria
   const handleCategoryChange = (e) => {
@@ -45,13 +45,13 @@ const Register = () => {
 
     console.log(company);
 
-    // dispatch(register(company));
+    dispatch(register(company));
   };
 
   // Clean all auth states
-  // useEffect(() => {
-  //   dispatch(reset());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(reset());
+  }, [dispatch]);
 
   return (
     <div id="container">
@@ -130,14 +130,13 @@ const Register = () => {
             />
           </div>
 
-          {/* {error && <Message msg={error} type="error" />} */}
-          {/* {!loading && <button type="submit">Criar conta</button>} */}
-          <button type="submit">Criar conta</button>
-          {/* {loading && (
+          {error && <Message msg={error} type="error" />}
+          {!loading && <button type="submit">Criar conta</button>}
+          {loading && (
             <button type="submit" disabled>
               Aguarde...
             </button>
-          )} */}
+          )}
           <p className="testeConta">
             <span>
               Já tem uma conta?

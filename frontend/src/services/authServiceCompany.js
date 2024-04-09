@@ -5,12 +5,12 @@ const register = async (data) => {
   const config = requestConfig("POST", data);
 
   try {
-    const res = await fetch(`${api}/users/register`, config)
+    const res = await fetch(`${api}/companies/register`, config)
       .then((res) => res.json())
       .catch((err) => err);
 
-    if (res) {
-      localStorage.setItem("user", JSON.stringify(res));
+    if (res._id) {
+      localStorage.setItem("company", JSON.stringify(res));
     }
 
     return res;
@@ -19,8 +19,8 @@ const register = async (data) => {
   }
 };
 
-const authService = {
+const authServiceCompany = {
   register,
 };
 
-export default authService;
+export default authServiceCompany;
