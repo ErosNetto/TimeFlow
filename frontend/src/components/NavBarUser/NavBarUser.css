@@ -1,0 +1,36 @@
+.navBar {
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  width: 100%;
+  padding: 1em 2em;
+  z-index: 1000;
+}
+
+.navBar-left h1 a {
+  color: red;
+}
+
+.navBar-links {
+  list-style: none;
+}
+
+.navBar-link {
+  display: inline-block;
+  padding: 0 1em;
+}
+
+.navBar-link a {
+  color: red;
+  cursor: pointer;
+  font-weight: 400;
+  transition: 0.3s;
+}
+
+.navBar-link a:hover {
+  color: blue;
+}

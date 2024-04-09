@@ -30,7 +30,7 @@ const Login = () => {
           <p className="testeConta">
             <span>
               Não possui uma conta?
-              <Link to="/user/register"> Cadastrar</Link>
+              <Link to="/register"> Cadastrar</Link>
             </span>
           </p>
         </form>
