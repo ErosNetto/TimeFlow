@@ -7,8 +7,12 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./store.js";
 
-// React router
+// Router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// Components
+import UserLayout from "./components/UserLayout/UserLayout.jsx";
+import CompanyLayout from "./components/CompanyLayout/CompanyLayout.jsx";
 
 // Pages
 import UserHomePage from "./pages/UserHomePage/UserHomePage.jsx";
@@ -18,10 +22,6 @@ import CompanyHomePage from "./pages/CompanyHomePage/CompanyHomePage.jsx";
 import CompanyLogin from "./pages/CompanyAuth/Login.jsx";
 import CompanyRegister from "./pages/CompanyAuth/Register.jsx";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
-
-// Components
-import UserLayout from "./components/UserLayout/UserLayout.jsx";
-import CompanyLayout from "./components/CompanyLayout/CompanyLayout.jsx";
 
 const router = createBrowserRouter([
   {

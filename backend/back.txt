@@ -1,0 +1,3 @@
+Preciso fazer a função de apagar automaticamente o banco de dados de TimeSlot.
+
+Talvez uma função para quando der erro ao conectar no banco de dados ele tente novamente.
