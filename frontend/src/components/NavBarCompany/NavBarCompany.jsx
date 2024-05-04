@@ -1,18 +1,21 @@
+// Barra de navegação da empresa
+
 import "./NavBarCompany.css";
 
 // Components
 import { NavLink, Link } from "react-router-dom";
-import Search from "../Search/Search";
 
 const NavBarCompany = () => {
   return (
     <nav className="navBar">
       <div className="navBar-left">
         <h1>
-          <Link to="/">TimeFlow Company</Link>
+          <Link to="/company">TimeFlow Company</Link>
         </h1>
       </div>
-      <Search />
+      <form>
+        <input type="text" placeholder="Pesquisar serviços ou empresas" />
+      </form>
       <div className="navBar-right">
         <ul className="navBar-links">
           <li className="navBar-link">

@@ -1,5 +1,5 @@
-import NavBarCompany from "../NavBarCompany/NavBarCompany";
-import Footer from "../Footer/Footer";
+import NavBarCompany from "../../NavBarCompany/NavBarCompany";
+import Footer from "../../Footer/Footer";
 
 function CompanyLayout({ children }) {
   return (

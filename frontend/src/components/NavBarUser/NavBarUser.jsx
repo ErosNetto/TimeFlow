@@ -1,8 +1,9 @@
+// Barra de navegação do usuário
+
 import "./NavBarUser.css";
 
 // Components
 import { NavLink, Link } from "react-router-dom";
-import Search from "../Search/Search";
 
 const NavBarUser = () => {
   return (
@@ -12,7 +13,9 @@ const NavBarUser = () => {
           <Link to="/">TimeFlow</Link>
         </h1>
       </div>
-      <Search />
+      <form>
+        <input type="text" placeholder="Pesquisar serviços ou empresas" />
+      </form>
       <div className="navBar-right">
         <ul className="navBar-links">
           <li className="navBar-link">

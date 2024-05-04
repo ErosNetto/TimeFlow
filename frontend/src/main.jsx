@@ -11,16 +11,18 @@ import { store } from "./store.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // Components
-import UserLayout from "./components/UserLayout/UserLayout.jsx";
-import CompanyLayout from "./components/CompanyLayout/CompanyLayout.jsx";
+import UserLayout from "./components/Layout//UserLayout/UserLayout.jsx";
+import CompanyLayout from "./components/Layout/CompanyLayout/CompanyLayout.jsx";
 
 // Pages
-import UserHomePage from "./pages/UserHomePage/UserHomePage.jsx";
-import UserLogin from "./pages/UserAuth/Login.jsx";
-import UserRegister from "./pages/UserAuth/Register.jsx";
-import CompanyHomePage from "./pages/CompanyHomePage/CompanyHomePage.jsx";
-import CompanyLogin from "./pages/CompanyAuth/Login.jsx";
-import CompanyRegister from "./pages/CompanyAuth/Register.jsx";
+import UserHomePage from "./pages/User/UserHomePage/UserHomePage.jsx";
+import UserLogin from "./pages/User/UserAuth/Login.jsx";
+import UserRegister from "./pages/User/UserAuth/Register.jsx";
+
+import CompanyHomePage from "./pages/Company/CompanyHomePage/CompanyHomePage.jsx";
+import CompanyLogin from "./pages/Company/CompanyAuth/Login.jsx";
+import CompanyRegister from "./pages/Company/CompanyAuth/Register.jsx";
+
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
 
 const router = createBrowserRouter([

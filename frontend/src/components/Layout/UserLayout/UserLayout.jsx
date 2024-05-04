@@ -1,5 +1,5 @@
-import NavBarUser from "../NavBarUser/NavBarUser";
-import Footer from "../Footer/Footer";
+import NavBarUser from "../../NavBarUser/NavBarUser";
+import Footer from "../../Footer/Footer";
 
 function UserLayout({ children }) {
   return (
