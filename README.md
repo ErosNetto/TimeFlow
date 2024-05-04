@@ -20,17 +20,7 @@ A ideia do projeto é criar um site para realizar marcação de horários para b
   - React
   - JavaScript
 - **Banco de dados:**
-  - MongoDB
-
-<!-- ## Funções para o Cliente (Usuário)
-
-- **Cadastro de clientes:** Os clientes criam contas na plataforma, inserem suas informações pessoais e de contato, facilitando o processo de agendamento futuro.
-- **Agendamento de horários:** Os clientes utilizam uma interface intuitiva para selecionar datas e horários disponíveis para os serviços desejados.
-- **Gerenciamento de cancelamentos e reagendamentos:** Os clientes podem cancelar ou reagendar seus horários de forma fácil.
-
-## Funções para a Empresa (Estabelecimento)
-
-- -->
+  - MongoDB Atras
 
 ## Instalação e Configuração
 
@@ -71,3 +61,40 @@ Certifique-se de adicionar as configurações específicas do seu ambiente, como
 4. Salve o arquivo `.env`.
 
 Lembre-se de substituir os valores das configurações de exemplo pelos valores corretos do seu ambiente.
+
+## Diagrama de casos de uso do Cliente
+
+##### (Diagrama em construção)
+
+- Cadastro e login;
+- Atualizar informações de cadastro;
+- Pesquisar empresas;
+- Pesquisar serviços;
+- Visualizar perfil da empresa;
+- Visualizar serviços da empres;
+- Visualizar disponibilidade de horários;
+- Agendar horário;
+- Gerenciar agendamentos:
+  - Visualizar seus agendamentos;
+  - Reagendar;
+  - Cancelar.
+
+## Diagrama de casos de uso da Empresa
+
+##### (Diagrama em construção)
+
+- Cadastro e login;
+- Atualizar informações de cadastro;
+- Adicionar serviços;
+- Adicinar profissionais;
+- Agendar horário (pessoalmente)
+- Receber notificações sobre os agendamentos;
+- Calendario de agendamentos;
+
+<!-- ## Funções para o Cliente (Usuário)
+
+- **Cadastro de clientes:** Os clientes criam contas na plataforma, inserem suas informações pessoais e de contato, facilitando o processo de agendamento futuro.
+- **Agendamento de horários:** Os clientes utilizam uma interface intuitiva para selecionar datas e horários disponíveis para os serviços desejados.
+- **Gerenciamento de cancelamentos e reagendamentos:** Os clientes podem cancelar ou reagendar seus horários de forma fácil.
+
+## Funções para a Empresa (Estabelecimento) -->
