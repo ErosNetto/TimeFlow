@@ -1,0 +1,2 @@
+Sobre o Layout:
+  Utilizei esse modo de Layout para poder separar a parde do site para o Usuário e a parte do site para a Empresa, sem precisar criar outro projeto para o site da Empresa. Desse jeito o site vai continuar sendo uma SPA, reutilizando os componentes de barra de navegação e rodape. Também usei duas barra de navegação uma pro Usuário e outra para a Empresa. 

@@ -3,14 +3,14 @@ import "./Auth.css";
 // Componensts
 import { Link } from "react-router-dom";
 import InputMask from "react-input-mask";
-import Message from "../../components/Message/Message";
+import Message from "../../../components/Message/Message";
 
 // Hooks
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // Redux
-import { register, reset } from "../../slices/authSliceUser";
+import { register, reset } from "../../../slices/authSliceUser";
 
 const Register = () => {
   const [userName, setUserName] = useState("");

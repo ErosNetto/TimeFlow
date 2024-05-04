@@ -4,7 +4,7 @@ import "./Auth.css";
 import { Link } from "react-router-dom";
 
 // Hooks
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 
 const Login = () => {
   const handleSubmit = (e) => {
@@ -14,7 +14,7 @@ const Login = () => {
   return (
     <div id="container">
       <div className="login-register-box">
-        <h1>Entrar</h1>
+        <h1>Entrar como Empresa</h1>
         <form onSubmit={handleSubmit}>
           <div className="grup-form">
             <label htmlFor="email">E-mail</label>
@@ -30,7 +30,7 @@ const Login = () => {
           <p className="testeConta">
             <span>
               Não possui uma conta?
-              <Link to="/register"> Cadastrar</Link>
+              <Link to="/company/register"> Cadastrar</Link>
             </span>
           </p>
         </form>

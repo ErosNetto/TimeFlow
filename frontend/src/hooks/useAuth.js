@@ -1,7 +1,8 @@
+// Hook para verificar se o usuário está autenticado (logado)
+
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-// Verifica se o usuário está autenticado (logado)
 export const useAuth = () => {
   const { user } = useSelector((state) => state.authUser);
 

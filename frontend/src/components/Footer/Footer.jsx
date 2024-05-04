@@ -1,3 +1,5 @@
+//  Rodapé do usuário e da empresa
+
 import "./Footer.css";
 
 const Footer = () => {

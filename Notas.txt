@@ -1,0 +1,18 @@
+Primeiro fazer todo a parte do Usuário e depois fazer a parte da Empresa
+
+
+
+Frontend {
+  Login e Registro: Preciso fazer a validação do formulario no frontend;
+  Preciso fazer a função no main para verificar se o Usuário está logado ou não, caso não esteja fazer o redirecionamento;
+}
+
+
+
+
+Backend {
+  Preciso fazer a função de apagar automaticamente o banco de dados de TimeSlot;
+  Talvez uma função para quando der erro ao conectar no banco de dados ele tente novamente;
+}
+
+Aula > 221

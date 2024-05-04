@@ -1,3 +1,5 @@
+// Mostra a mensagem de erro do backend
+
 import "./Message.css";
 
 const Message = ({ msg, type }) => {
