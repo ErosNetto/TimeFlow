@@ -24,6 +24,7 @@ const convertFiles = async (req, res, next) => {
       // Using Sharp to convert the image to WebP
       await sharp(inputPath).webp().toFile(outputPath);
 
+      // Excluir o arquivo original
       await fs.unlink(inputPath);
 
       file.filename = path.basename(outputPath);
