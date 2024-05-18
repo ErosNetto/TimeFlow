@@ -1,5 +1,5 @@
 const sharp = require("sharp");
-const fs = require("fs/promises");
+const fse = require("fs-extra");
 const path = require("path");
 
 // Middleware to convert images and update names in req.files
@@ -25,7 +25,7 @@ const convertFiles = async (req, res, next) => {
       await sharp(inputPath).webp().toFile(outputPath);
 
       // Excluir o arquivo original
-      await fs.unlink(inputPath);
+      await fse.move(inputPath, outputPath, { overwrite: true });
 
       file.filename = path.basename(outputPath);
     });
@@ -35,9 +35,12 @@ const convertFiles = async (req, res, next) => {
     // console.log("Todos os arquivos foram processados com sucesso.");
     next();
   } catch (error) {
-    console.error("Erro ao processar os arquivos:", error);
-    res.status(500).send("Erro ao processar os arquivos.");
+    console.error("Erro ao converter os arquivos:", error);
+    res.status(500).send("Erro ao converter os arquivos.");
   }
 };
 
 module.exports = { convertFiles };
+
+// Excluir o arquivo original
+// await fs.unlink(inputPath);
